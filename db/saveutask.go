@@ -8,8 +8,9 @@ import (
 	"time"
 )
 
+// UTaskdb contains csv file or db details for saving utasks
 type UTaskdb struct {
-	CsvFile string
+	CsvFile string // csv file to save the task
 }
 
 // SaveUTask is the main entry point for saving cfg details to db or csv
@@ -20,10 +21,10 @@ func (utaskdb *UTaskdb) SaveUTask(name string, details string) error {
 	// @TODO: implement db connection and save
 
 	// save to csv
-	entry := []string{ time.Now().Format("02/01/2006"),
-					   time.Now().Format("15:04"),
-		               name,
-		               details,
+	entry := []string{time.Now().Format("02/01/2006"),
+		time.Now().Format("15:04"),
+		name,
+		details,
 	}
 	log.WithFields(log.Fields{"entry": entry, "csvfile": utaskdb.CsvFile}).Info("save to csv file")
 	err := utaskdb.saveToCsv(entry)
@@ -32,7 +33,7 @@ func (utaskdb *UTaskdb) SaveUTask(name string, details string) error {
 }
 
 // write to csv file and flush, reports any errors
-func  writeAndFlush(w *csv.Writer, entry []string) error {
+func writeAndFlush(w *csv.Writer, entry []string) error {
 
 	// step 1 - writer nil check
 	if w == nil {
@@ -41,8 +42,8 @@ func  writeAndFlush(w *csv.Writer, entry []string) error {
 
 	// step 2 - write entry to the file
 	err := w.Write(entry)
-	if  err != nil { // only log write errors but dont return
-		log.WithFields(log.Fields{ "err": err}).Error("error occurred while writing to file")
+	if err != nil { // only log write errors but dont return
+		log.WithFields(log.Fields{"err": err}).Error("error occurred while writing to file")
 	}
 
 	// step 3 - leave it as you find it
@@ -50,7 +51,7 @@ func  writeAndFlush(w *csv.Writer, entry []string) error {
 
 	// step 4 - check for errors
 	if err = w.Error(); err != nil {
-		log.WithFields(log.Fields{"err" : err}).Error("write error occurred")
+		log.WithFields(log.Fields{"err": err}).Error("write error occurred")
 		return errors.New("error during writing")
 	}
 
@@ -78,7 +79,7 @@ func (utaskdb *UTaskdb) saveToCsv(entry []string) (err error) {
 	// step 3- open csv file, - create a new csv file unless exists
 	f, err := os.OpenFile(utaskdb.CsvFile, os.O_CREATE|os.O_RDWR|os.O_APPEND, os.ModePerm)
 	if err != nil {
-		log.WithFields(log.Fields{"err": err, "file" : utaskdb.CsvFile}).Error("can not open file")
+		log.WithFields(log.Fields{"err": err, "file": utaskdb.CsvFile}).Error("can not open file")
 		return
 	}
 	w := csv.NewWriter(f)
@@ -87,10 +88,10 @@ func (utaskdb *UTaskdb) saveToCsv(entry []string) (err error) {
 	// modifies named return parameter err of the wrapper function
 	defer func() {
 		err = f.Close()
-		if  err != nil {
-			log.WithFields(log.Fields{"err" : err}).Error("errored while closing csv file")
+		if err != nil {
+			log.WithFields(log.Fields{"err": err}).Error("errored while closing csv file")
 		}
-	} ()
+	}()
 
 	// step 5 - write to the csv file
 	if !bFileExists { // add a header if this is the first time we are writing

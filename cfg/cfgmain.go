@@ -1,43 +1,43 @@
-// cfg package sets up a unix socket where it accepts requests overu
+// Package cfg sets up a unix socket where it accepts requests overu
 // for starting, stopping utasks
 package cfg
 
 import (
 	"context"
+	"github.com/golark/utaskdaemon/httpmux"
 	"github.com/gorilla/mux"
 	log "github.com/sirupsen/logrus"
 	"net"
 	"net/http"
 	"os"
 	"time"
-	"github.com/golark/utaskdaemon/httpmux"
 )
 
 // UnixSocketSetup creates a unix socket & starts a listener at the unix socket
 // returns the listener and nil
-func UnixSocketSetup(unixSocketAddr string) (net.Listener,error) {
+func UnixSocketSetup(unixSocketAddr string) (net.Listener, error) {
 
 	// step 1 - remove previous socket
 	err := os.RemoveAll(unixSocketAddr)
 	if err != nil {
 		// we cant remove old socket - log but continue execution
-		log.WithFields(log.Fields{"unixSocketAddr": unixSocketAddr, "err" : err}).Warn("this can cause problems when trying to communicate over this socket")
+		log.WithFields(log.Fields{"unixSocketAddr": unixSocketAddr, "err": err}).Warn("this can cause problems when trying to communicate over this socket")
 	}
 
 	// step 2 - listen unix port
 	listener, err := net.Listen("unix", unixSocketAddr) // listen on unix socket
 	if err != nil {
 		// if we can't communicate, we shall die
-		log.WithFields(log.Fields{"unixSocketAddr": unixSocketAddr, "err" : err}).Fatal("cant listen on socket - exiting")
+		log.WithFields(log.Fields{"unixSocketAddr": unixSocketAddr, "err": err}).Fatal("cant listen on socket - exiting")
 		return nil, err
 	}
 
 	return listener, nil
 }
 
-// UTaskMain stars a listener at the given unix socket address serving cfg http requests
+// UtaskMain stars a listener at the given unix socket address serving cfg http requests
 // takes in a unix socket address
-func UtaskMain(unixSocketAddr string, cDone <- chan struct{}) error {
+func UtaskMain(unixSocketAddr string, cDone <-chan struct{}) error {
 
 	// step 1 - unix socket setup
 	listener, err := UnixSocketSetup(unixSocketAddr)
@@ -85,4 +85,3 @@ func UtaskMain(unixSocketAddr string, cDone <- chan struct{}) error {
 
 	return nil
 }
-

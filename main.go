@@ -1,12 +1,12 @@
 package main
 
 import (
+	"github.com/golark/utaskdaemon/cfg"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
 	"os"
 	"os/signal"
 	"syscall"
-	"github.com/golark/utaskdaemon/cfg"
 )
 
 // default unix socket address unless provided by config file
@@ -18,8 +18,8 @@ const (
 func init() {
 
 	// step 1 - logrus config
-	log.SetOutput(os.Stdout)      // use stdout rather than default stderr
-	log.SetLevel(log.TraceLevel)  // log verbosity
+	log.SetOutput(os.Stdout)     // use stdout rather than default stderr
+	log.SetLevel(log.TraceLevel) // log verbosity
 
 	// step 2 - viper options
 	viper.SetConfigType("yaml")
@@ -37,22 +37,23 @@ func init() {
 }
 
 // handle incoming signals
-func signalHandler(cSig <- chan os.Signal, cDone chan <- struct{}) {
+func signalHandler(cSig <-chan os.Signal, cDone chan<- struct{}) {
 
-	for sig := range cSig{
-		log.WithFields(log.Fields{"signal" : sig}).Info("signal received")
-		if sig == syscall.SIGTERM  || sig == syscall.SIGKILL || sig == syscall.SIGINT {
+	for sig := range cSig {
+		log.WithFields(log.Fields{"signal": sig}).Info("signal received")
+		if sig == syscall.SIGTERM || sig == syscall.SIGKILL || sig == syscall.SIGINT {
 			// signal for graceful exit
 			cDone <- struct{}{}
 		}
 	}
 }
 
+// almighty main - hold your socks
 func main() {
 
 	// step 1 - register for signals
 	chanSignal := make(chan os.Signal)
-	chanDone   := make(chan struct{})
+	chanDone := make(chan struct{})
 	go signalHandler(chanSignal, chanDone) // spin out a handler for incoming signals
 	signal.Notify(chanSignal)              // receive all signals
 
@@ -62,4 +63,3 @@ func main() {
 	// step 3 - start cfg main
 	cfg.UtaskMain(unixSocketAddr, chanDone)
 }
-

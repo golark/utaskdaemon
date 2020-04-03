@@ -13,10 +13,10 @@ func TestSingleShotUTask(t *testing.T) {
 	// start single cfg with time out of bounds
 	err := singleShotUTask(
 		httpmux.SingleShotReq{
-		T:       0, // time is passed as 0 - this should return an error
-		Name:    "",
-		Details: "",
-	})
+			T:       0, // time is passed as 0 - this should return an error
+			Name:    "",
+			Details: "",
+		})
 
 	// expecting error
 	if err == nil {
@@ -30,7 +30,7 @@ func TestUnixSocketSetup(t *testing.T) {
 
 	_, err := utask.UnixSocketSetup("/tmp/test.sckt")
 
-	if  err != nil {
+	if err != nil {
 		t.Errorf("Error during unix socket setup")
 	}
 

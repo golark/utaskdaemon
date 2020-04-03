@@ -48,7 +48,7 @@ func TestStartTimer(t *testing.T) {
 	go handler.ServeHTTP(r, req)
 
 	// check that the time is the default
-	singleShoReq := <- cSingleShot
+	singleShoReq := <-cSingleShot
 	if singleShoReq.T != 20 {
 		t.Errorf("Didn't receveive expected time %v", singleShoReq.T)
 	}

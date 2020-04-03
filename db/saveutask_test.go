@@ -4,7 +4,7 @@ import (
 	"testing"
 )
 
-func  TestUTaskdb_SaveUTask(t *testing.T) {
+func TestUTaskdb_SaveUTask(t *testing.T) {
 
 	testCsvFile := "/tmp/dummy.csv"
 	db := UTaskdb{testCsvFile}

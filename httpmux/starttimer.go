@@ -14,11 +14,11 @@ type HttpContext struct {
 	CSingleShot chan SingleShotReq
 }
 
-// single shot request from cli
+// SingleShotReq for registering details incoming requests from a client
 type SingleShotReq struct {
-	T time.Duration
-	Name string
-	Details string
+	T       time.Duration // utask duration requested
+	Name    string        // task name
+	Details string        // extra notes about the task
 }
 
 // StartTimer http handler that starts single shot cfg

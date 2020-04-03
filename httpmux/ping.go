@@ -10,7 +10,7 @@ import (
 func Ping(w http.ResponseWriter, r *http.Request) {
 
 	// step 1 - log incoming ping
-	log.WithFields(log.Fields{"uri": r.URL.String(), "method": r.Method, "remoteAddr" : r.RemoteAddr}).Info("ping received - replying")
+	log.WithFields(log.Fields{"uri": r.URL.String(), "method": r.Method, "remoteAddr": r.RemoteAddr}).Info("ping received - replying")
 
 	// step 2 - reply back
 	w.WriteHeader(http.StatusOK)
