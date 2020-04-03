@@ -8,3 +8,6 @@
 # test and coverage files
 *.test
 *.out
+
+# build folder
+bin/

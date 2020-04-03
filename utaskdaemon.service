@@ -1,0 +1,8 @@
+[Unit]
+Description=utaskdaemon
+
+[Service]
+ExecStart=/opt/utask/utaskdaemon
+
+[Install]
+WantedBy=default.target
