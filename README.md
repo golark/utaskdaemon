@@ -1,4 +1,6 @@
-![utasklogo](logo/utasklogo_withprint.png)
+![utasklogo](media/utasklogo_withprint.png)
+
+[![Go Report Card](https://goreportcard.com/badge/github.com/golark/utaskdaemon)](https://goreportcard.com/report/github.com/golark/utaskdaemon)
 
 Daemon for the utask productivity tool that aims to boost focus by dissecting complex projects into small chunks of increments called utasks ( micro tasks ).
 
@@ -25,6 +27,8 @@ Some of the cutting-edge libraries included in this package are Viper, Logrus, G
 
 Only manual installation is supported currently. Package manager installation will be available in the near future.
 Manual installation:
+
+![manual installation](media/manual_installation.gif)
 
 ## Contribution
 
@@ -60,13 +64,16 @@ this link for instructions on how to do this.
     |   ├── ping.go                 # handle ping requests
     |   ├── starttimer.go           # start a single shot utask timer
     |   ├── httpmux_test.go         # module test
-    ├── logo                        # images for project logo
+    ├── media                       # images for project logo and installation demonstration
+    |   ├── utasklogo.png #
     |   ├── utasklogo_withprint.png #
     ├── config.yaml                 # configuration for the project  
     ├── go.mod                      # required modules
+    ├── install.sh                  # for manual installations
     ├── LICENSE                     # 
     ├── main.go                     # entry point, configure logrus & viper, read config, handle signals
-    ├── README.md                   # 
+    ├── README.md                   #
+    ├── utaskdaemon.service         # service descriptor for systemd
     └ 
 ### Copyright and license
 
