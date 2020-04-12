@@ -23,7 +23,6 @@ func init() {
 
 	// step 2 - viper options
 	viper.SetConfigType("yaml")
-	viper.AddConfigPath("src/github.com/golark/utaskdaemon/")
 	viper.AddConfigPath("./")
 	viper.SetConfigName("config.yaml")
 	viper.SetDefault("UnixSocketAddr", DefaultUnixSocketAddr)

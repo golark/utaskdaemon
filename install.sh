@@ -10,7 +10,7 @@ set -e
 #   $ sh install_utask.sh
 #
 # Make sure the contentss of the script is the same as
-# https://github.com/golark/utaskdaemon/install/install_utask.sh
+# https://github.com/golark/utaskdaemon/install.sh
 # before executing
 
 # top level definitions

@@ -74,7 +74,7 @@ func (utaskdb *UTaskdb) saveToCsv(entry []string) (err error) {
 
 	// step 2 - check if csv file exists
 	_, err = os.Stat(utaskdb.CsvFile)
-	bFileExists := os.IsExist(err)
+	bNewFile := os.IsNotExist(err)
 
 	// step 3- open csv file, - create a new csv file unless exists
 	f, err := os.OpenFile(utaskdb.CsvFile, os.O_CREATE|os.O_RDWR|os.O_APPEND, os.ModePerm)
@@ -94,7 +94,7 @@ func (utaskdb *UTaskdb) saveToCsv(entry []string) (err error) {
 	}()
 
 	// step 5 - write to the csv file
-	if !bFileExists { // add a header if this is the first time we are writing
+	if bNewFile { // add a header if this is the first time we are writing
 		header := []string{"date", "time", "task name", "notes"}
 		if err = writeAndFlush(w, header); err != nil {
 			return
