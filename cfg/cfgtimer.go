@@ -65,9 +65,9 @@ func singleShotUTask(s httpmux.SingleShotReq) error {
 	var csvFile string
 	if err != nil {
 		log.WithFields(log.Fields{"err": err}).Error("cant get user home directory")
-		csvFile = "/opt/cfg.csv"
+		csvFile = "/opt/utask.csv"
 	} else {
-		csvFile = homeDir + "/Documents/cfg.csv"
+		csvFile = homeDir + "/Documents/utask.csv"
 	}
 
 	db := db.UTaskdb{csvFile}
