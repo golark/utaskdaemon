@@ -2,7 +2,6 @@ package cfg
 
 import (
 	"testing"
-	"utaskdaemon/utask"
 
 	"github.com/golark/utaskdaemon/httpmux"
 )
@@ -28,7 +27,7 @@ func TestSingleShotUTask(t *testing.T) {
 // setup a dummy unix socket
 func TestUnixSocketSetup(t *testing.T) {
 
-	_, err := utask.UnixSocketSetup("/tmp/test.sckt")
+	_, err := UnixSocketSetup("/tmp/test.sckt")
 
 	if err != nil {
 		t.Errorf("Error during unix socket setup")
