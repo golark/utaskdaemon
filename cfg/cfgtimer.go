@@ -63,19 +63,19 @@ func singleShotUTask(s httpmux.SingleShotReq) error {
 
 	// save cfg
 	homeDir, err := os.UserHomeDir()
-	var csvFile string
+	var tasksFile string
 	if err != nil {
 		log.WithFields(log.Fields{"err": err}).Error("cant get user home directory")
-		csvFile = "/opt/utask.csv"
+		tasksFile = "/opt/utask.json"
 	} else {
-		csvFile = homeDir + "/Documents/utask.csv"
+		tasksFile = homeDir + "/Documents/utask.json"
 	}
 
 	// mongo
 	URI := "mongodb://localhost:27017"
 	database := "tasks"
 	collection := "taskCollection"
-	db := db.UTaskdb{csvFile, URI, database, collection}
+	db := db.UTaskdb{TaskFile: tasksFile, MongoURI: URI, MongoDatabase: database, MongoCollection: collection}
 	err = db.SaveUTask(s.Name, s.Details)
 	if err != nil {
 		log.WithFields(log.Fields{"err": err}).Error("cant save cfg")

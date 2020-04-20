@@ -1,17 +1,17 @@
 package db
 
 import (
-	"encoding/csv"
+	"encoding/json"
 	db "github.com/golark/mongodb"
 	log "github.com/sirupsen/logrus"
-	errors "golang.org/x/xerrors"
+	"io/ioutil"
 	"os"
 	"time"
 )
 
 // UTaskdb contains csv file or db details for saving utasks
 type UTaskdb struct {
-	CsvFile string // csv file to save the task
+	TaskFile string // file to save the tasks
 	MongoURI string
 	MongoDatabase string
 	MongoCollection string
@@ -51,12 +51,6 @@ func (utaskdb *UTaskdb) saveToMongo(t TaskTrace) error {
 // tries to save to both db and csv
 func (utaskdb *UTaskdb) SaveUTask(name string, details string) error {
 
-	// entry to save
-	entry := []string{time.Now().Format("02/01/2006"),
-		time.Now().Format("15:04"),
-		name,
-		details,
-	}
 	t := TaskTrace{time.Now().Format("02/01/2006"),
 		time.Now().Format("15:04"),
 		name,
@@ -64,18 +58,74 @@ func (utaskdb *UTaskdb) SaveUTask(name string, details string) error {
 	}
 
 	// step 1 - try to save to db
-	err := utaskdb.saveToMongo(t)
-	if err != nil {
-		log.WithFields(log.Fields{"err":err}).Info("couldn't save to mongo db")
+	if utaskdb.MongoURI != "" {
+		err := utaskdb.saveToMongo(t)
+		if err != nil {
+			log.WithFields(log.Fields{"err":err}).Info("couldn't save to mongo db")
+		}
+
+	} else {
+		log.Trace("skipping mongodb as URI is not provided")
 	}
 
 	// step 2 - save to csv
-	log.WithFields(log.Fields{"entry": entry, "csvfile": utaskdb.CsvFile}).Info("save to csv file")
-	err = utaskdb.saveToCsv(entry)
+	err := marshalAndSave(utaskdb.TaskFile, t)
+	if err != nil {
+		return err
+	}
 
 	return err
 }
 
+func marshalAndSave(filename string, newTask TaskTrace) error {
+
+	var tasks []TaskTrace
+
+	// read previous entries
+	prevTasks, err := readTasksFromFile(filename)
+
+	if err != nil && !os.IsNotExist(err) {
+		return err
+	}
+
+	// add previous and new task
+	if prevTasks != nil {
+		tasks = append(tasks, prevTasks...)
+	}
+	tasks = append(tasks, newTask)
+
+	m, err := json.MarshalIndent(tasks, "", "   ")
+	if err != nil {
+		log.WithFields(log.Fields{"err":err}).Error("cant marshal")
+		return err
+	}
+
+	err = ioutil.WriteFile(filename, m, 0664)
+	if err != nil {
+		log.WithFields(log.Fields{"err":err}).Error("can not write to file")
+		return err
+	}
+
+	return nil
+}
+
+func readTasksFromFile(fileName string) ([]TaskTrace, error) {
+
+	// step 1 - read file
+	r, err := ioutil.ReadFile(fileName)
+	if err != nil {
+		log.WithFields(log.Fields{"err":err}).Error("cant read file")
+		return nil, err
+	}
+
+	// step 2 - unmarshal data
+	var t []TaskTrace
+	json.Unmarshal(r, &t)
+
+	return t, nil
+}
+
+/*
 // write to csv file and flush, reports any errors
 func csvWriteAndFlush(w *csv.Writer, entry []string) error {
 
@@ -150,3 +200,4 @@ func (utaskdb *UTaskdb) saveToCsv(entry []string) (err error) {
 
 	return
 }
+*/
