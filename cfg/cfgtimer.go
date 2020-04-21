@@ -16,7 +16,6 @@ type SingleShot struct {
 	CsvFile string        // csv file for output
 	Name    string        // name of the task
 	Details string        // task notes
-
 }
 
 // UTaskTimer intended as a go routine that receives a time duration for cfg over the channel
@@ -75,8 +74,14 @@ func singleShotUTask(s httpmux.SingleShotReq) error {
 	URI := "mongodb://localhost:27017"
 	database := "tasks"
 	collection := "taskCollection"
-	db := db.UTaskdb{TaskFile: tasksFile, MongoURI: URI, MongoDatabase: database, MongoCollection: collection}
-	err = db.SaveUTask(s.Name, s.Details)
+	utaskdb := db.UTaskdb{TaskFile: tasksFile, MongoURI: URI, MongoDatabase: database, MongoCollection: collection}
+
+	// time stamp the task and save
+	t := db.TaskTrace{SDate: time.Now().Format("02/01/2006"),
+		STime:time.Now().Format("15:04"),
+		T:db.Task{ProjectName:"proj name", TaskName:s.Name, Details:s.Details,}, }
+
+	err = utaskdb.SaveTaskTrace(&t)
 	if err != nil {
 		log.WithFields(log.Fields{"err": err}).Error("cant save cfg")
 		return err

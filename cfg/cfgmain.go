@@ -4,6 +4,7 @@ package cfg
 
 import (
 	"context"
+	"github.com/golark/utaskdaemon/db"
 	"github.com/golark/utaskdaemon/httpmux"
 	"github.com/gorilla/mux"
 	log "github.com/sirupsen/logrus"
@@ -65,7 +66,12 @@ func UtaskMain(unixSocketAddr string, cDone <-chan struct{}) error {
 	}()
 	log.Info("listening for connections")
 
-	// step 5 - handle shutdown requests
+	// step 5 - start mongodb interface
+	cTaskdB := make(chan db.TaskTrace)
+	go db.SaveTask(cTaskdB)
+	go db.StartMux(cTaskdB)
+
+	// step 6 - handle shutdown requests
 	<-cDone // wait for signal to shutdown
 
 	// if we are here, we need to cleanup gracefully - like a pretty little maid
