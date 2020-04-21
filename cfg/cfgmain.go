@@ -50,7 +50,8 @@ func UtaskMain(unixSocketAddr string, cDone <-chan struct{}) error {
 	// step 2 - spin utask_timer
 	cSingleShot := make(chan httpmux.SingleShotReq)
 	cStopTimer := make(chan struct{})
-	go UTaskTimer(cSingleShot, cStopTimer)
+	cTaskdB := make(chan db.TaskTrace)
+	go UTaskTimer(cSingleShot, cStopTimer, cTaskdB)
 
 	// step 3 - setup http mux
 	router := mux.NewRouter()
@@ -67,7 +68,6 @@ func UtaskMain(unixSocketAddr string, cDone <-chan struct{}) error {
 	log.Info("listening for connections")
 
 	// step 5 - start mongodb interface
-	cTaskdB := make(chan db.TaskTrace)
 	go db.SaveTask(cTaskdB)
 	go db.StartMux(cTaskdB)
 

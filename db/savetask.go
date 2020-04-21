@@ -33,7 +33,6 @@ func SaveTask(c <- chan TaskTrace) {
 		utaskdb := UTaskdb{ fileName, URI, Database, Collection}
 		utaskdb.SaveTaskTrace(&t)
 	}
-
 }
 
 // SaveTaskTrace is the main entry point for saving cfg details to db or text file
@@ -142,29 +141,38 @@ func readFileAndUnmarshal(fileName string) ([]TaskTrace, error) {
 
 // GetTasks
 // return all task traces by first searching in db and then the file
-func GetTasks() {
+func GetTasks() (*[]TaskTrace, error) {
 
 	// check if the db can be reached
 	// step 1 -  connect
 	dbConn, err := mongodb.NewMongoConn(URI, Database, Collection)
 	if err != nil {
 		log.WithFields(log.Fields{"err":err, "URI":URI}).Error("cant connect to mongodb")
+		return nil, err
 
 	}
 	defer dbConn.Disconnect()
 
-
 	// get tasks from the db
-	/*var rawData []map[string]interface{}
+	var rawData []map[string]interface{}
 
 	rawData, err = dbConn.GetAllDocuments()
 	if err != nil {
-		log.WithFields(log.Fields{"err":err, "URI":utaskdb.MongoURI}).Error("error while getting documents")
+		log.WithFields(log.Fields{"err":err}).Error("error while getting documents")
+		return nil, err
 	}
 	log.WithFields(log.Fields{"rawdata":rawData}).Info("received documents")
-	*/
-	// get tasks from file
 
-	// prune ?
+	// parse
+	var tSlc []TaskTrace
+	for _, r:= range rawData {
+		t := TaskTrace{}
+		jStr, _ := json.Marshal(r)
+		json.Unmarshal(jStr, &t)
+
+		tSlc = append(tSlc, t)
+	}
+
+	return &tSlc, nil
 }
 

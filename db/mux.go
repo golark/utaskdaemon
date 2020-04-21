@@ -20,7 +20,7 @@ type muxContext struct {
 }
 
 // addTask
-// insers a new task to the db
+// insert a new task to the db
 func (mCtx muxContext) addTask(w http.ResponseWriter, r *http.Request) {
 
 	log.Trace("received request to add task")
@@ -48,16 +48,16 @@ func (a muxContext) getAllTasks(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Access-Control-Allow-Origin", "*") // when calling rest API through browsers this is needed
 
-	GetTasks()
-	/*
-		if err != nil {
-			log.WithFields(log.Fields{"err":err}).Error("cant get tasks from db")
-			return
-		}
+	t, err := GetTasks()
 
-		w.Header().Set("Content-Type", "application/json")
-		json.NewEncoder(w).Encode(tasks)
-	*/
+	if err != nil {
+		log.WithFields(log.Fields{"err":err}).Error("cant get tasks from db")
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(t)
+
 }
 
 func StartMux(c chan <- TaskTrace) {

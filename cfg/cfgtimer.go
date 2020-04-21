@@ -5,7 +5,6 @@ import (
 	"github.com/golark/utaskdaemon/httpmux"
 	log "github.com/sirupsen/logrus"
 	errors "golang.org/x/xerrors"
-	"os"
 	"os/exec"
 	"time"
 )
@@ -20,13 +19,13 @@ type SingleShot struct {
 
 // UTaskTimer intended as a go routine that receives a time duration for cfg over the channel
 // upon receiving the time, it starts a timer
-func UTaskTimer(c chan httpmux.SingleShotReq, chanDone <-chan struct{}) {
+func UTaskTimer(c chan httpmux.SingleShotReq, chanDone <-chan struct{}, cDB chan <- db.TaskTrace) {
 
 	for {
 		select {
 		case sShot := <-c:
 			log.WithFields(log.Fields{"SingleShot": sShot}).Info("starting single show cfg")
-			go singleShotUTask(sShot)
+			go singleShotUTask(sShot, cDB)
 		case <-chanDone: // we need to return
 			log.Trace("gracefully stopping utasktimer")
 			return
@@ -38,7 +37,7 @@ func UTaskTimer(c chan httpmux.SingleShotReq, chanDone <-chan struct{}) {
 // singleShotUTask performs a single shot cfg notifying user to focus, refocus and rest
 // single argument time duration must be larger than 1 minute
 // returns error if the time duration is shorter than the minimum limit as above
-func singleShotUTask(s httpmux.SingleShotReq) error {
+func singleShotUTask(s httpmux.SingleShotReq, cDB chan <- db.TaskTrace) error {
 
 	if s.T <= 0 {
 		return errors.New("singleShotUTask duration is too low")
@@ -60,32 +59,10 @@ func singleShotUTask(s httpmux.SingleShotReq) error {
 	cmd = exec.Command("notify-send", "-u", "critical", "-t", "0", "time is up", "take a break")
 	cmd.Run()
 
-	// save cfg
-	homeDir, err := os.UserHomeDir()
-	var tasksFile string
-	if err != nil {
-		log.WithFields(log.Fields{"err": err}).Error("cant get user home directory")
-		tasksFile = "/opt/utask.json"
-	} else {
-		tasksFile = homeDir + "/Documents/utask.json"
-	}
-
-	// mongo
-	URI := "mongodb://localhost:27017"
-	database := "tasks"
-	collection := "taskCollection"
-	utaskdb := db.UTaskdb{TaskFile: tasksFile, MongoURI: URI, MongoDatabase: database, MongoCollection: collection}
-
-	// time stamp the task and save
-	t := db.TaskTrace{SDate: time.Now().Format("02/01/2006"),
+	// time stamp the task and send over channel to save
+	cDB <- db.TaskTrace{SDate: time.Now().Format("02/01/2006"),
 		STime:time.Now().Format("15:04"),
 		T:db.Task{ProjectName:"proj name", TaskName:s.Name, Details:s.Details,}, }
-
-	err = utaskdb.SaveTaskTrace(&t)
-	if err != nil {
-		log.WithFields(log.Fields{"err": err}).Error("cant save cfg")
-		return err
-	}
 
 	return nil
 }

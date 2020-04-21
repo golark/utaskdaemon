@@ -3,7 +3,7 @@ module github.com/golark/utaskdaemon
 go 1.13
 
 require (
-	github.com/golark/mongodb v0.0.0-20200420131742-93ec2fab6d44
+	github.com/golark/mongodb v0.0.0-20200420195518-994476bae62d
 	github.com/gorilla/mux v1.7.4
 	github.com/sirupsen/logrus v1.5.0
 	github.com/spf13/viper v1.6.2
