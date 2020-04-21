@@ -2,7 +2,6 @@ package db
 
 import (
 	"encoding/json"
-	"github.com/golark/mongodb"
 	log "github.com/sirupsen/logrus"
 	"io/ioutil"
 	"os"
@@ -67,7 +66,7 @@ func (utaskdb *UTaskdb) SaveTaskTrace(t *TaskTrace) error {
 func (utaskdb *UTaskdb) saveToDB(t *TaskTrace) error {
 
 	// step 1 -  connect
-	dbConn, err := mongodb.NewMongoConn(utaskdb.MongoURI, utaskdb.MongoDatabase, utaskdb.MongoCollection)
+	dbConn, err := NewMongoConn(utaskdb.MongoURI, utaskdb.MongoDatabase, utaskdb.MongoCollection)
 	if err != nil {
 		log.WithFields(log.Fields{"err":err, "URI":utaskdb.MongoURI}).Error("cant connect to mongodb")
 		return err
@@ -145,7 +144,7 @@ func GetTasks() (*[]TaskTrace, error) {
 
 	// check if the db can be reached
 	// step 1 -  connect
-	dbConn, err := mongodb.NewMongoConn(URI, Database, Collection)
+	dbConn, err := NewMongoConn(URI, Database, Collection)
 	if err != nil {
 		log.WithFields(log.Fields{"err":err, "URI":URI}).Error("cant connect to mongodb")
 		return nil, err
@@ -174,5 +173,25 @@ func GetTasks() (*[]TaskTrace, error) {
 	}
 
 	return &tSlc, nil
+}
+
+func DeleteAllTasks() error {
+
+	// check if the db can be reached
+	// step 1 -  connect
+	dbConn, err := NewMongoConn(URI, Database, Collection)
+	if err != nil {
+		log.WithFields(log.Fields{"err":err, "URI":URI}).Error("cant connect to mongodb")
+		return err
+	}
+	defer dbConn.Disconnect()
+
+	// step 2 - harakiri
+	err = dbConn.DeleteAll()
+	if err != nil {
+		log.WithFields(log.Fields{"err":err}).Error("Error deleting document")
+	}
+
+	return nil
 }
 

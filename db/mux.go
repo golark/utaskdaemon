@@ -60,6 +60,12 @@ func (a muxContext) getAllTasks(w http.ResponseWriter, r *http.Request) {
 
 }
 
+func (a muxContext) deleteAllTasks(w http.ResponseWriter, r *http.Request) {
+
+	log.Info("received request deleteTask")
+	DeleteAllTasks()
+}
+
 func StartMux(c chan <- TaskTrace) {
 
 	URI := "mongodb://localhost:27017"
@@ -72,6 +78,7 @@ func StartMux(c chan <- TaskTrace) {
 
 	router.HandleFunc("/addtask", muxContext{utaskdb: &uTaskdb, c:c}.addTask).Methods("POST")
 	router.HandleFunc("/gettasks", muxContext{utaskdb: &uTaskdb, c:c}.getAllTasks).Methods("GET")
+	router.HandleFunc("/deletealltasks", muxContext{utaskdb: &uTaskdb, c:c}.deleteAllTasks).Methods("GET")
 
 	log.Info("starting mongodb mux")
 	http.ListenAndServe(port, router)
