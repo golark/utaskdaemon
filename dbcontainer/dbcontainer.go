@@ -13,6 +13,8 @@ import (
 	"strings"
 )
 
+// IsContainerRunning
+// check if the container exists and is running
 func IsContainerRunning(name string) bool {
 
 	contExist, cont := containerExists(name)
