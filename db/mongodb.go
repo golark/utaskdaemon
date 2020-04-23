@@ -3,6 +3,7 @@ package db
 import (
 	"context"
 	"errors"
+	"github.com/golark/utaskdaemon/dbcontainer"
 	log "github.com/sirupsen/logrus"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -20,7 +21,19 @@ type MongoConn struct {
 	client     *mongo.Client
 }
 
+const (
+	ContainerName = "utaskmongo"
+)
+
+// NewMongoConn
+// if container is not running, restart it or create a new one
+// start connection with the container
 func NewMongoConn(URI string, database string, colName string) (*MongoConn, error) {
+
+	// first check if the container exists
+	if !dbcontainer.IsContainerRunning(ContainerName) {
+		dbcontainer.CreateMongodbContainer(ContainerName)
+	}
 
 	db := &MongoConn{uri: URI, database: database, collectionName: colName}
 
@@ -115,7 +128,6 @@ func (db *MongoConn) DeleteAll() error {
 	}
 
 	log.Info("deleting all documents")
-
 	res, err := db.collection.DeleteMany(context.TODO(), bson.M{})
 	if err != nil {
 		log.WithFields(log.Fields{"err":err}).Error("can not delete documents")
