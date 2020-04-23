@@ -62,7 +62,7 @@ func singleShotUTask(s httpmux.SingleShotReq, cDB chan <- db.TaskTrace) error {
 	// time stamp the task and send over channel to save
 	cDB <- db.TaskTrace{SDate: time.Now().Format("02/01/2006"),
 		STime:time.Now().Format("15:04"),
-		T:db.Task{ProjectName:"proj name", TaskName:s.Name, Details:s.Details,}, }
+		T:db.Task{ProjectName:s.ProjName, TaskName:s.TaskName, Details:s.Details,}, }
 
 	return nil
 }

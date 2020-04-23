@@ -16,9 +16,10 @@ type HttpContext struct {
 
 // SingleShotReq for registering details incoming requests from a client
 type SingleShotReq struct {
-	T       time.Duration // utask duration requested
-	Name    string        // task name
-	Details string        // extra notes about the task
+	T        time.Duration // utask duration requested
+	ProjName string        // project name
+	TaskName string        // task name
+	Details  string        // extra notes about the task
 }
 
 // StartTimer http handler that starts single shot cfg
@@ -28,6 +29,7 @@ func (httpCtx HttpContext) StartTimer(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 
 	// step 2 - try to extract variables
+	projName := params["projname"]
 	taskName := params["taskname"]
 	taskNote := params["tasknote"]
 
@@ -43,6 +45,6 @@ func (httpCtx HttpContext) StartTimer(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// step 3 - send the time received over the channel
-	httpCtx.CSingleShot <- SingleShotReq{tTime, taskName, taskNote}
+	httpCtx.CSingleShot <- SingleShotReq{tTime, projName, taskName, taskNote}
 
 }

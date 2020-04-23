@@ -22,7 +22,6 @@ func IsContainerRunning(name string) bool {
 	return contExist && cont.State == "running"
 }
 
-
 // containerExists
 // check if a container with given name exits
 func containerExists(name string) (bool, *types.Container ) {
