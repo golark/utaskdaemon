@@ -24,35 +24,11 @@ const useStyles = makeStyles((theme) => ({
 
 class TaskList extends React.Component {
 
-    constructor() {
-        super();
-
-        this.state = {
-
-            tasks : [],
-            persons: []
-        }
-    }
-
-    componentDidMount() {
-
-        Axios.get('http://localhost:8091/gettasks')
-            .then(res => {
-                console.log(res.data)
-
-                this.setState( { tasks: res.data})
-            })
-
-
-        console.log("tasks" + this.state.tasks.Name)
-
-    }
-
     // createListItem generate single item given primary and secondary text
-    createListItem(prim, secon) {
+    createListItem(key, prim, secon) {
 
         return (
-            <ListItem>
+            <ListItem key={key}>
                 <ListItemAvatar>
                     <Avatar>
                         <AccessTime />
@@ -69,15 +45,15 @@ class TaskList extends React.Component {
 
         // create task list
         // @TODO: consider a map based implementation
-        const taskList  = []
-        for (let i = 0; i < this.state.tasks.length; i++) {
-            const task = this.state.tasks[i]
-            taskList.push(this.createListItem(task.T.TaskName + " / " + task.T.ProjectName, task.SDate + "  " + task.STime))
+        const taskListView  = []
+        for (let i = 0; i < this.props.taskList.length; i++) {
+            const task = this.props.taskList[i]
+            taskListView.push(this.createListItem(i, task.T.TaskName + " / " + task.T.ProjectName, task.SDate + "  " + task.STime))
         }
 
         return (
             <List className={classes.root}>
-                {taskList}
+                {taskListView}
             </List>
         );
     }

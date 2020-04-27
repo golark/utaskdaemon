@@ -15,18 +15,18 @@ export default class UtaskDashboard extends Component {
         }
     }
 
-
+    componentDidMount() {
+        this.fetchUTaskList()
+    }
 
     // fetch task list from REST Endpoint
     fetchUTaskList() {
         Axios.get(DAEMONURL)
             .then(res => {
-                console.log(res.data)
 
                 this.setState( { taskList: res.data})
             })
     }
-
 
     render() {
         return (
