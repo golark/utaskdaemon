@@ -10,7 +10,6 @@ import (
 // attempt to start single shot cfg with wrong parameters
 func TestSingleShotUTask(t *testing.T) {
 
-
 	ch := make(chan db.TaskTrace)
 
 	// start single cfg with time out of bounds
@@ -37,5 +36,4 @@ func TestUnixSocketSetup(t *testing.T) {
 	if err != nil {
 		t.Errorf("Error during unix socket setup")
 	}
-
 }

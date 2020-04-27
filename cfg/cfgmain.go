@@ -56,7 +56,7 @@ func UtaskMain(unixSocketAddr string, cDone <-chan struct{}) error {
 	// step 3 - setup http mux
 	router := mux.NewRouter()
 	router.HandleFunc("/ping", httpmux.Ping).Methods("GET")
-	router.HandleFunc("/start/{time}/{taskname}/{tasknote}", httpmux.HttpContext{time.Duration(1), cSingleShot}.StartTimer).Methods("GET")
+	router.HandleFunc("/start/{time}/{projname}/{taskname}/{tasknote}", httpmux.HttpContext{time.Duration(1), cSingleShot}.StartTimer).Methods("GET")
 
 	// step 4 - http baby
 	srv := &http.Server{Handler: router}
