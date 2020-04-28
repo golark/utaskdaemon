@@ -3,7 +3,7 @@ import TaskList from "./TaskList";
 import Axios from 'axios';
 
 // url to fetch task lists
-const DAEMONURL = 'http://localhost:8091/gettasks';
+const DAEMONURL = 'http://localhost:8091/';
 
 export default class UtaskDashboard extends Component {
 
@@ -21,7 +21,7 @@ export default class UtaskDashboard extends Component {
 
     // fetch task list from REST Endpoint
     fetchUTaskList() {
-        Axios.get(DAEMONURL)
+        Axios.get(DAEMONURL + 'gettaskssorted')
             .then(res => {
 
                 this.setState( { taskList: res.data})

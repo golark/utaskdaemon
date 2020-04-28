@@ -42,6 +42,26 @@ func (mCtx muxContext) addTask(w http.ResponseWriter, r *http.Request) {
 
 }
 
+func (a muxContext) getAllTasksSorted(w http.ResponseWriter, r *http.Request) {
+
+	log.Info("received request getAllTasks")
+
+	w.Header().Set("Access-Control-Allow-Origin", "*") // when calling rest API through browsers this is needed
+
+	t, err := GetTasks()
+
+	*t = SortTaskList(*t)
+
+	if err != nil {
+		log.WithFields(log.Fields{"err":err}).Error("cant get tasks from db")
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(t)
+
+}
+
 func (a muxContext) getAllTasks(w http.ResponseWriter, r *http.Request) {
 
 	log.Info("received request getAllTasks")
@@ -78,6 +98,7 @@ func StartMux(c chan <- TaskTrace) {
 
 	router.HandleFunc("/addtask", muxContext{utaskdb: &uTaskdb, c:c}.addTask).Methods("POST")
 	router.HandleFunc("/gettasks", muxContext{utaskdb: &uTaskdb, c:c}.getAllTasks).Methods("GET")
+	router.HandleFunc("/gettaskssorted", muxContext{utaskdb: &uTaskdb, c:c}.getAllTasksSorted).Methods("GET")
 	router.HandleFunc("/deletealltasks", muxContext{utaskdb: &uTaskdb, c:c}.deleteAllTasks).Methods("GET")
 
 	log.Info("starting mongodb mux")
