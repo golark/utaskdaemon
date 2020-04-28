@@ -80,6 +80,28 @@ func (a muxContext) getAllTasks(w http.ResponseWriter, r *http.Request) {
 
 }
 
+// getProjectCounts
+// returns project names along with the number of utasks registered for each project
+func (a muxContext) getProjectCounts(w http.ResponseWriter, r *http.Request) {
+
+	log.Info("received request getAllTasks")
+
+	w.Header().Set("Access-Control-Allow-Origin", "*") // when calling rest API through browsers this is needed
+
+
+
+	t, err := GetTasks()
+	if err != nil {
+		log.WithFields(log.Fields{"err":err}).Error("cant get tasks from db")
+		return
+	}
+	projCount := CountProjects(*t)
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(projCount)
+
+}
+
 func (a muxContext) deleteAllTasks(w http.ResponseWriter, r *http.Request) {
 
 	log.Info("received request deleteTask")
@@ -100,6 +122,7 @@ func StartMux(c chan <- TaskTrace) {
 	router.HandleFunc("/gettasks", muxContext{utaskdb: &uTaskdb, c:c}.getAllTasks).Methods("GET")
 	router.HandleFunc("/gettaskssorted", muxContext{utaskdb: &uTaskdb, c:c}.getAllTasksSorted).Methods("GET")
 	router.HandleFunc("/deletealltasks", muxContext{utaskdb: &uTaskdb, c:c}.deleteAllTasks).Methods("GET")
+	router.HandleFunc("/getprojectcounts", muxContext{utaskdb: &uTaskdb, c:c}.getProjectCounts).Methods("GET")
 
 	log.Info("starting mongodb mux")
 	http.ListenAndServe(port, router)

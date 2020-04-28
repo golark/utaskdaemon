@@ -17,6 +17,7 @@ export default class UtaskDashboard extends Component {
 
     componentDidMount() {
         this.fetchUTaskList()
+        this.getUtaskProjectCount()
     }
 
     // fetch task list from REST Endpoint
@@ -25,6 +26,15 @@ export default class UtaskDashboard extends Component {
             .then(res => {
 
                 this.setState( { taskList: res.data})
+            })
+    }
+
+    getUtaskProjectCount() {
+        Axios.get(DAEMONURL + 'getprojectcounts')
+            .then(res => {
+
+                // this.setState( { taskList: res.data})
+                console.log(res.data)
             })
     }
 

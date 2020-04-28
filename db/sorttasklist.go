@@ -12,18 +12,32 @@ func containsEntry(l []string, entry string) bool {
 	return false
 }
 
-// SortTaskList
-// sort task list with project name
-func SortTaskList(taskTraces []TaskTrace) []TaskTrace {
+// getUniqueProjects
+// get unique project entries in the task trace
+func getUniqueProjects(taskTraces []TaskTrace) []string {
 
 	var projList []string
-	var sortedList []TaskTrace
 
 	// step 1 - make a list of unique project names
 	for _, trace := range taskTraces {
 		if false == containsEntry(projList, trace.T.ProjectName) {
 			projList = append(projList, trace.T.ProjectName)
 		}
+	}
+
+	return projList
+}
+
+// SortTaskList
+// sort task list with project name
+func SortTaskList(taskTraces []TaskTrace) []TaskTrace {
+
+	var sortedList []TaskTrace
+
+	// step 1 - make a list of unique project names
+	projList := getUniqueProjects(taskTraces)
+	if projList == nil {
+		return nil
 	}
 
 	// step 2 - sort items according to project name
@@ -37,4 +51,32 @@ func SortTaskList(taskTraces []TaskTrace) []TaskTrace {
 	}
 
 	return sortedList
+}
+
+func CountProjects(taskTraces []TaskTrace) []map[string]int {
+
+	var countMap []map[string]int
+
+	// step 1 - make a list of unique project names
+	projList := getUniqueProjects(taskTraces)
+	if projList == nil {
+		return nil
+	}
+
+	// step 2 - get the counts
+	for _, proj := range projList {
+
+		count := 0
+		for _, trace := range taskTraces {
+			if proj == trace.T.ProjectName {
+				count++
+			}
+		}
+
+		countMap = append(countMap, map[string]int{proj:count})
+
+	}
+
+	return countMap
+
 }
