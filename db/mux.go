@@ -80,6 +80,11 @@ func (a muxContext) getAllTasks(w http.ResponseWriter, r *http.Request) {
 
 }
 
+
+type PlotData struct {
+	Labels []string
+	Data   []int
+}
 // getProjectCounts
 // returns project names along with the number of utasks registered for each project
 func (a muxContext) getProjectCounts(w http.ResponseWriter, r *http.Request) {
@@ -88,8 +93,6 @@ func (a muxContext) getProjectCounts(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Access-Control-Allow-Origin", "*") // when calling rest API through browsers this is needed
 
-
-
 	t, err := GetTasks()
 	if err != nil {
 		log.WithFields(log.Fields{"err":err}).Error("cant get tasks from db")
@@ -97,8 +100,17 @@ func (a muxContext) getProjectCounts(w http.ResponseWriter, r *http.Request) {
 	}
 	projCount := CountProjects(*t)
 
+	var plotData PlotData
+
+	for k,v := range projCount {
+		plotData.Labels = append(plotData.Labels, k)
+		plotData.Data = append(plotData.Data, v)
+	}
+
+	log.WithFields(log.Fields{"plotData":plotData}).Info("project count")
+
 	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(projCount)
+	json.NewEncoder(w).Encode(plotData)
 
 }
 

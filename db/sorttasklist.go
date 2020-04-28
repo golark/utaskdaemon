@@ -53,9 +53,9 @@ func SortTaskList(taskTraces []TaskTrace) []TaskTrace {
 	return sortedList
 }
 
-func CountProjects(taskTraces []TaskTrace) []map[string]int {
+func CountProjects(taskTraces []TaskTrace) map[string]int {
 
-	var countMap []map[string]int
+	countMap := make(map[string]int)
 
 	// step 1 - make a list of unique project names
 	projList := getUniqueProjects(taskTraces)
@@ -73,7 +73,7 @@ func CountProjects(taskTraces []TaskTrace) []map[string]int {
 			}
 		}
 
-		countMap = append(countMap, map[string]int{proj:count})
+		countMap[proj] = count
 
 	}
 

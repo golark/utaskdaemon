@@ -3,12 +3,9 @@ import { makeStyles } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListItem from '@material-ui/core/ListItem';
-import TypoGraphy from '@material-ui/core/Typography'
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import Avatar from '@material-ui/core/Avatar';
 import AccessTime from '@material-ui/icons/AccessTime';
-import PropTypes from 'prop-types';
-import Axios from 'axios';
 
 const useStyles = makeStyles((theme) => ({
     root: {
