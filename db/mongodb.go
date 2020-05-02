@@ -97,7 +97,7 @@ func (db *MongoConn) connect() error {
 		return errors.New("collection name can not be empty")
 	}
 
-	db.collection = db.client.Database("test").Collection("entries")
+	db.collection = db.client.Database(db.database).Collection(db.collectionName)
 	log.WithFields(log.Fields{"Database": db.database, "CollectionName": db.collectionName}).Info("created database & collection")
 
 	return nil

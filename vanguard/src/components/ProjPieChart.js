@@ -4,10 +4,8 @@ import { Aspect6 } from 'chartjs-plugin-colorschemes/src/colorschemes/colorschem
 
 let myLineChart
 
-//--Chart Style Options--//
 Chart.defaults.global.defaultFontFamily = "'PT Sans', sans-serif"
-Chart.defaults.global.legend.display = false;
-//--Chart Style Options--//
+
 export default class ProjPieChart extends React.Component {
 
     constructor(props) {
@@ -46,8 +44,17 @@ export default class ProjPieChart extends React.Component {
             options: {
                 legend: {
                     display: true
-                }
-            }
+                },
+                title:{
+                    display:true,
+                    text:'Task Share Breakdown',
+                    padding:0,
+                    fontColor:'#949696',
+                    fontSize:30,
+                    fontStyle:' bold',
+                },
+
+            },
 
 
         });
@@ -57,7 +64,7 @@ export default class ProjPieChart extends React.Component {
     render() {
 
         return  (
-            <div>
+            <div style={{width: '100vh', height: '100vh'}}>
                 <canvas
                     id="myChart"
                     ref={this.chartRef}

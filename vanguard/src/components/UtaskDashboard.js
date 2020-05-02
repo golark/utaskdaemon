@@ -24,7 +24,7 @@ export default class UtaskDashboard extends Component {
 
     // fetch task list from REST Endpoint
     fetchUTaskList() {
-        Axios.get(DAEMONURL + 'gettaskssorted')
+        Axios.get(DAEMONURL + 'gettasks')
             .then(res => {
 
                 this.setState( { taskList: res.data})
@@ -45,11 +45,11 @@ export default class UtaskDashboard extends Component {
 
     render() {
         return (
-            <div style={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
+            <div style={{display: 'flex', flexDirection: 'row' }}>
                 <div style={{display: 'flex', flexDirection: 'row', alignItems: 'center', width: '50%'}}>
                     <TaskList taskList={this.state.taskList}></TaskList>
                 </div>
-                <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', height: '100%', padding: '5em'}}>
                     <ProjPieChart data={this.state.projCount.Data} labels={this.state.projCount.Labels}/>
                 </div>
             </div>
