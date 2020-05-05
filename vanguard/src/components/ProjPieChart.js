@@ -1,17 +1,30 @@
 import React from 'react';
 import Chart from "chart.js";
+import { borders } from '@material-ui/system';
 import { Aspect6 } from 'chartjs-plugin-colorschemes/src/colorschemes/colorschemes.office';
+import { makeStyles } from '@material-ui/core/styles';
+import withStyles from "@material-ui/core/styles/withStyles";
 
+const useStyles = makeStyles =>({
+    pieChartClass: {
+        border: 0,
+//        borderRadius: 3,
+//        boxShadow: '0 1px 2px 1px #00a0b7',
+        color: 'white',
+        width: '100vh',
+        height: '600px',
+        padding: '0 30px',
+    },
+});
 let myLineChart
 
 Chart.defaults.global.defaultFontFamily = "'PT Sans', sans-serif"
 
-export default class ProjPieChart extends React.Component {
+class ProjPieChart extends React.Component {
 
     constructor(props) {
         super(props);
     }
-
 
     chartRef = React.createRef();
     componentDidMount() {
@@ -53,18 +66,15 @@ export default class ProjPieChart extends React.Component {
                     fontSize:30,
                     fontStyle:' bold',
                 },
-
             },
-
-
         });
-
     }
 
     render() {
 
+        const { classes } = this.props;
         return  (
-            <div style={{width: '100vh', height: '100vh'}}>
+            <div className={classes.pieChartClass} >
                 <canvas
                     id="myChart"
                     ref={this.chartRef}
@@ -74,3 +84,5 @@ export default class ProjPieChart extends React.Component {
     }
 
 }
+
+export default withStyles(useStyles)(ProjPieChart)

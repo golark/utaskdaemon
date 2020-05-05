@@ -53,6 +53,21 @@ func SortTaskList(taskTraces []TaskTrace) []TaskTrace {
 	return sortedList
 }
 
+
+func CountNumUtasksPerDay(taskTraces []TaskTrace) map[string]int {
+
+	countMap := make(map[string]int)
+
+	for _, taskTrace := range taskTraces {
+		countMap[taskTrace.SDate] = countMap[taskTrace.SDate]+1
+	}
+
+	return countMap
+
+}
+
+// CountProjects
+// count the number of entries per project
 func CountProjects(taskTraces []TaskTrace) map[string]int {
 
 	countMap := make(map[string]int)
