@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+package protother;
+
+// plots
+service Tasks {
+  rpc GetTasks (TaskRequest) returns (stream UTask) {}
+
+  rpc Ping (PingRequest) returns (PingReply) {}
+}
+
+message PingRequest {
+  string Message = 1;
+}
+
+message PingReply {
+  string Message = 1;
+}
+
+message TaskRequest {
+  string Message = 1;
+}
+
+message UTask {
+  string TaskMane = 1;
+  string Project = 2;
+  string Date = 3;
+}

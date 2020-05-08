@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
+import 'package:vanguard/grpcclient.dart';
 
 void main() {
   runApp(MyApp());
@@ -77,6 +77,10 @@ class TaskListViewState extends State<TaskListView> {
           child: Text('Press to add item'),
           onPressed: () {
             print('adding new item');
+
+            GrpcClient grpcClient = new GrpcClient();
+            grpcClient.pingServer();
+
             setState(() {
               Tasks.add('new item');
             });

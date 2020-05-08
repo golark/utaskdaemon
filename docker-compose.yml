@@ -1,0 +1,12 @@
+version: '3.7'
+
+services:
+  envoy:
+    image: envoyproxy/envoy:36f39c746eb7d03b762099b206403935b11972d8
+    restart: always
+    command: /usr/local/bin/envoy -c /etc/envoy/envoy.yaml
+    ports:
+      - '8080:8080'
+    volumes:
+      - ./docker/envoy/envoy.yaml:/etc/envoy/envoy.yaml
+    network_mode: 'host'

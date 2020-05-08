@@ -9,11 +9,16 @@ require (
 	github.com/docker/docker v17.12.0-ce-rc1.0.20200422015624-f6a5ccf492e8+incompatible
 	github.com/docker/go-connections v0.4.0 // indirect
 	github.com/docker/go-units v0.4.0 // indirect
+	github.com/golang/protobuf v1.3.2
 	github.com/gorilla/mux v1.7.4
+	github.com/moby/term v0.0.0-20200507201656-73f35e472e8f // indirect
+	github.com/morikuni/aec v1.0.0 // indirect
 	github.com/opencontainers/go-digest v1.0.0-rc1 // indirect
 	github.com/opencontainers/image-spec v1.0.1 // indirect
 	github.com/sirupsen/logrus v1.5.0
 	github.com/spf13/viper v1.6.2
 	go.mongodb.org/mongo-driver v1.3.2
 	golang.org/x/xerrors v0.0.0-20191204190536-9bdfabe68543
+	google.golang.org/grpc v1.27.0
+	gotest.tools/v3 v3.0.2 // indirect
 )

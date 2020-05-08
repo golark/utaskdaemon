@@ -70,6 +70,7 @@ func UtaskMain(unixSocketAddr string, cDone <-chan struct{}) error {
 	// step 5 - start mongodb interface
 	go db.SaveTask(cTaskdB)
 	go db.StartMux(cTaskdB)
+	go db.GrpcServer()
 
 	// step 6 - handle shutdown requests
 	<-cDone // wait for signal to shutdown
