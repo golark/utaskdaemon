@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 
 void main() {
   runApp(MyApp());
@@ -40,7 +41,7 @@ Widget bodyLayout() {
       // section 1 - list view
       Expanded(
         flex: 4,
-        child: UtaskListView(),
+        child: TaskListView(),
         ),
 
       // section 2 - graphs and analytics
@@ -54,42 +55,67 @@ Widget bodyLayout() {
     );
 }
 
+class TaskListView extends StatefulWidget {
+  @override
+  TaskListViewState createState() {
+    return new TaskListViewState();
+  }
+}
 
-class UtaskListView extends StatelessWidget{
+class TaskListViewState extends State<TaskListView> {
 
-      // backing data
-  final europeanCountries = ['Albania', 'Andorra', 'Armenia', 'Austria', 
-        'Azerbaijan', 'Belarus', 'Belgium', 'Bosnia and Herzegovina', 'Bulgaria',
-        'Croatia', 'Cyprus', 'Czech Republic', 'Denmark', 'Estonia', 'Finland',
-        'France', 'Georgia', 'Germany', 'Greece', 'Hungary', 'Iceland', 'Ireland',
-        'Italy', 'Kazakhstan', 'Kosovo', 'Latvia', 'Liechtenstein', 'Lithuania',
-        'Luxembourg', 'Macedonia', 'Malta', 'Moldova', 'Monaco', 'Montenegro',
-        'Netherlands', 'Norway', 'Poland', 'Portugal', 'Romania', 'Russia',
-        'San Marino', 'Serbia', 'Slovakia', 'Slovenia', 'Spain', 'Sweden', 
-        'Switzerland', 'Turkey', 'Ukraine', 'United Kingdom', 'Vatican City'];  
-
+  List<String> Tasks = ['T1', 'T2', 'T3'];
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      itemCount: europeanCountries.length,
+    return Column(
+      children: <Widget>[
+         SizedBox(
+              height: 300,
+        child: myListView(),),
+        RaisedButton(
+          child: Text('Press to add item'),
+          onPressed: () {
+            print('adding new item');
+            setState(() {
+              Tasks.add('new item');
+            });
+          },
+       ),
+      ],); 
+  }
+
+  Widget myListView() {
+     return ListView.builder(
+      itemCount: Tasks.length,
       itemBuilder: (context, index) {
         return Card(
           child: ListTile (
             leading: Icon(Icons.star),
-            title: Text(europeanCountries[index]),
+            title: Text(Tasks[index]),
             trailing: Icon(Icons.keyboard_arrow_right),
+
+
             onTap: () {
+              setState(() {
+                Tasks.add('a');
+              });
               print('on touch ' + index.toString());
             },
+
+            onLongPress: () {
+              setState(() {
+                Tasks.removeAt(index);
+              });
+            },
+
+
           ),
         );
       },
     );
   }
-
 }
-
 
 Widget graphView() {
   return Container(
