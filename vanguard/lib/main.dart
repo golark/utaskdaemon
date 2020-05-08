@@ -71,18 +71,20 @@ class UtaskListView extends StatelessWidget{
 
   @override
   Widget build(BuildContext context) {
-    return ListView.separated(
+    return ListView.builder(
       itemCount: europeanCountries.length,
       itemBuilder: (context, index) {
-        return ListTile(
-          leading: Icon(Icons.star),
-          title: Text(europeanCountries[index]),
+        return Card(
+          child: ListTile (
+            leading: Icon(Icons.star),
+            title: Text(europeanCountries[index]),
+            trailing: Icon(Icons.keyboard_arrow_right),
+            onTap: () {
+              print('on touch ' + index.toString());
+            },
+          ),
         );
       },
-      separatorBuilder: (context, index) {
-        return Divider();
-      },
-
     );
   }
 
