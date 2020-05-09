@@ -45,6 +45,24 @@ func (u UTaskServer)  GetTasks(req *protother.TaskRequest, strm protother.Tasks_
 	return nil
 }
 
+func (u UTaskServer)  GetDailyTaskCount(req *protother.TaskRequest, strm protother.Tasks_GetDailyTaskCountServer) error {
+
+	t, err := GetTasks()
+	if err != nil {
+		log.WithFields(log.Fields{"err":err}).Error("cant get tasks from db")
+		return err
+	}
+
+	projCount := CountProjects(*t)
+	for p, c := range projCount {
+		if err := strm.Send(&protother.DailyCount{Date:p,Count:int32(c)}); err!=nil {
+			return err
+		}
+	}
+
+	return nil
+}
+
 // GrpcServer
 // gRPC server for the db contents
 func GrpcServer() {
@@ -62,5 +80,4 @@ func GrpcServer() {
 		log.WithFields(log.Fields{"err":err}).Error("error serving")
 	}
 }
-
 

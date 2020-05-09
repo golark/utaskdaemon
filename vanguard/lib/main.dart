@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:vanguard/grpcclient.dart';
+import 'package:vanguard/clicksperyear.dart';
+import 'package:charts_flutter/flutter.dart' as charts;
 
 void main() {
   runApp(MyApp());
@@ -42,17 +44,21 @@ Widget bodyLayout() {
       Expanded(
         flex: 4,
         child: TaskListView(),
-        ),
+      ),
+
 
       // section 2 - graphs and analytics
       Expanded( 
         flex: 6,
-        child: graphView(),
+        child: Column(
+          children: <Widget> [
+            graphView(),
+          ],
         ),
+      ),
 
-  
-    ],),
-    );
+
+    ],),);
 }
 
 class TaskListView extends StatefulWidget {
@@ -68,34 +74,12 @@ class TaskListViewState extends State<TaskListView> {
 
   @override
   Widget build(BuildContext context) {
+
     return Column(
       children: <Widget>[
          SizedBox(
-              height: 600,
+              height: 700,
         child: myFutureListView(),),
-        RaisedButton(
-          child: Text('Press to add item'),
-          onPressed: () {
-            print('adding new item');
-
-            GrpcClient grpcClient = new GrpcClient();
-            grpcClient.pingServer();
-            Future<List<Task>> tasksList = grpcClient.getTasks();
-
-            tasksList.then((val) {
-              print(val[0].getProjectName());
-
-              setState(() {
-                for(var i=0;i<val.length;++i){
-                  tasks.add(val[i].getProjectName());
-                }
-              });
-
-
-            });
-
-          },
-       ),
       ],); 
   }
 
@@ -112,7 +96,23 @@ class TaskListViewState extends State<TaskListView> {
             itemBuilder: (context, index) {
               return Card (
                 child:ListTile(
-                  title: Text(snapshot.data[index].getProjectName())
+                  leading: Icon(Icons.star),
+                  title: Text(snapshot.data[index].getProjectName()),
+                  trailing: Icon(Icons.keyboard_arrow_right),
+
+
+                  onTap: () {
+                    print('on touch ' + index.toString());
+                  },
+
+
+                  onLongPress: () {
+                    setState(() {
+                      tasks.removeAt(index);
+                    });
+                  },
+
+
                 )
               );
             }
@@ -127,44 +127,60 @@ class TaskListViewState extends State<TaskListView> {
               ),
         );
       },
-    
-    );
-  }
-
-
-
-  Widget myListView() {
-     return ListView.builder(
-      itemCount: tasks.length,
-      itemBuilder: (context, index) {
-        return Card(
-          child: ListTile (
-            leading: Icon(Icons.star),
-            title: Text(tasks[index]),
-            trailing: Icon(Icons.keyboard_arrow_right),
-
-
-            onTap: () {
-              print('on touch ' + index.toString());
-            },
-
-
-            onLongPress: () {
-              setState(() {
-                tasks.removeAt(index);
-              });
-            },
-
-
-          ),
-        );
-      },
     );
   }
 }
 
 Widget graphView() {
-  return Container(
-    color: Colors.cyanAccent,
-    child: Text('graph view'));  
+
+  GrpcClient grpcClient = new GrpcClient();
+
+  var data = [
+    new UtasksPerDay("11", 12),
+    new UtasksPerDay("14", 12),
+    new UtasksPerDay("13", 9),
+  ];
+
+    return FutureBuilder(
+      future: grpcClient.getUtasksPerDay(),
+      builder: (context, snapshot) {
+        if(snapshot.hasData) {
+          
+          List<UtasksPerDay> dataUtask = [];
+          for(var i=0;i<snapshot.data.length;i++) {
+            dataUtask.add(UtasksPerDay(snapshot.data[i].date, snapshot.data[i].count));
+          }
+
+
+          var series = [
+            new charts.Series(
+              id: 'Clicks',
+              domainFn: (UtasksPerDay countData, _) => countData.date,
+              measureFn: (UtasksPerDay countData, _) => countData.count,
+              data: dataUtask,
+              ),
+          ];
+
+
+          return Container (
+            child: Padding(
+              padding: EdgeInsets.all(32.0),
+              child: SizedBox (
+                height: 200.0,
+                child: charts.BarChart(
+                  series,
+                )
+              )
+
+            ));
+        }
+        return Container(
+          child: SizedBox(
+                child: CircularProgressIndicator(),
+                width: 10,
+                height: 10,
+              ),
+        );
+      },
+    );
 }

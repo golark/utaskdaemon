@@ -18,6 +18,11 @@ class TasksClient extends $grpc.Client {
       '/protother.Tasks/GetTasks',
       ($0.TaskRequest value) => value.writeToBuffer(),
       ($core.List<$core.int> value) => $0.UTask.fromBuffer(value));
+  static final _$getDailyTaskCount =
+      $grpc.ClientMethod<$0.TaskRequest, $0.DailyCount>(
+          '/protother.Tasks/GetDailyTaskCount',
+          ($0.TaskRequest value) => value.writeToBuffer(),
+          ($core.List<$core.int> value) => $0.DailyCount.fromBuffer(value));
   static final _$ping = $grpc.ClientMethod<$0.PingRequest, $0.PingReply>(
       '/protother.Tasks/Ping',
       ($0.PingRequest value) => value.writeToBuffer(),
@@ -29,6 +34,14 @@ class TasksClient extends $grpc.Client {
   $grpc.ResponseStream<$0.UTask> getTasks($0.TaskRequest request,
       {$grpc.CallOptions options}) {
     final call = $createCall(_$getTasks, $async.Stream.fromIterable([request]),
+        options: options);
+    return $grpc.ResponseStream(call);
+  }
+
+  $grpc.ResponseStream<$0.DailyCount> getDailyTaskCount($0.TaskRequest request,
+      {$grpc.CallOptions options}) {
+    final call = $createCall(
+        _$getDailyTaskCount, $async.Stream.fromIterable([request]),
         options: options);
     return $grpc.ResponseStream(call);
   }
@@ -52,6 +65,13 @@ abstract class TasksServiceBase extends $grpc.Service {
         true,
         ($core.List<$core.int> value) => $0.TaskRequest.fromBuffer(value),
         ($0.UTask value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$0.TaskRequest, $0.DailyCount>(
+        'GetDailyTaskCount',
+        getDailyTaskCount_Pre,
+        false,
+        true,
+        ($core.List<$core.int> value) => $0.TaskRequest.fromBuffer(value),
+        ($0.DailyCount value) => value.writeToBuffer()));
     $addMethod($grpc.ServiceMethod<$0.PingRequest, $0.PingReply>(
         'Ping',
         ping_Pre,
@@ -66,12 +86,19 @@ abstract class TasksServiceBase extends $grpc.Service {
     yield* getTasks(call, await request);
   }
 
+  $async.Stream<$0.DailyCount> getDailyTaskCount_Pre(
+      $grpc.ServiceCall call, $async.Future<$0.TaskRequest> request) async* {
+    yield* getDailyTaskCount(call, await request);
+  }
+
   $async.Future<$0.PingReply> ping_Pre(
       $grpc.ServiceCall call, $async.Future<$0.PingRequest> request) async {
     return ping(call, await request);
   }
 
   $async.Stream<$0.UTask> getTasks(
+      $grpc.ServiceCall call, $0.TaskRequest request);
+  $async.Stream<$0.DailyCount> getDailyTaskCount(
       $grpc.ServiceCall call, $0.TaskRequest request);
   $async.Future<$0.PingReply> ping(
       $grpc.ServiceCall call, $0.PingRequest request);
