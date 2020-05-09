@@ -72,7 +72,7 @@ class TaskListViewState extends State<TaskListView> {
       children: <Widget>[
          SizedBox(
               height: 600,
-        child: myListView(),),
+        child: myFutureListView(),),
         RaisedButton(
           child: Text('Press to add item'),
           onPressed: () {
@@ -98,6 +98,34 @@ class TaskListViewState extends State<TaskListView> {
        ),
       ],); 
   }
+
+  Widget myFutureListView() {
+    GrpcClient grpcClient = new GrpcClient();
+
+    return FutureBuilder(
+      future: grpcClient.getTasks(),
+      builder: (context, snapshot) {
+        if(snapshot.hasData) {
+          return ListView.builder (
+            itemCount: snapshot.data.length,
+            itemBuilder: (context, index) {
+              return Card (
+                child:ListTile(
+                  title: Text(snapshot.data[index].getProjectName())
+                )
+              );
+            }
+          );
+        }
+        return ListView.builder(
+          itemCount: 0,
+        );
+      },
+    
+    );
+  }
+
+
 
   Widget myListView() {
      return ListView.builder(
