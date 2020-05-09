@@ -106,7 +106,8 @@ class TaskListViewState extends State<TaskListView> {
       future: grpcClient.getTasks(),
       builder: (context, snapshot) {
         if(snapshot.hasData) {
-          return ListView.builder (
+          return Container (
+            child: ListView.builder (
             itemCount: snapshot.data.length,
             itemBuilder: (context, index) {
               return Card (
@@ -115,10 +116,15 @@ class TaskListViewState extends State<TaskListView> {
                 )
               );
             }
+            ),
           );
         }
-        return ListView.builder(
-          itemCount: 0,
+        return Container(
+          child: SizedBox(
+                child: CircularProgressIndicator(),
+                width: 10,
+                height: 10,
+              ),
         );
       },
     
