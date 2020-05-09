@@ -64,14 +64,14 @@ class TaskListView extends StatefulWidget {
 
 class TaskListViewState extends State<TaskListView> {
 
-  List<String> Tasks = ['T1', 'T2', 'T3'];
+  List<String> tasks = [];
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
          SizedBox(
-              height: 300,
+              height: 600,
         child: myListView(),),
         RaisedButton(
           child: Text('Press to add item'),
@@ -80,10 +80,20 @@ class TaskListViewState extends State<TaskListView> {
 
             GrpcClient grpcClient = new GrpcClient();
             grpcClient.pingServer();
+            Future<List<Task>> tasksList = grpcClient.getTasks();
 
-            setState(() {
-              Tasks.add('new item');
+            tasksList.then((val) {
+              print(val[0].getProjectName());
+
+              setState(() {
+                for(var i=0;i<val.length;++i){
+                  tasks.add(val[i].getProjectName());
+                }
+              });
+
+
             });
+
           },
        ),
       ],); 
@@ -91,25 +101,23 @@ class TaskListViewState extends State<TaskListView> {
 
   Widget myListView() {
      return ListView.builder(
-      itemCount: Tasks.length,
+      itemCount: tasks.length,
       itemBuilder: (context, index) {
         return Card(
           child: ListTile (
             leading: Icon(Icons.star),
-            title: Text(Tasks[index]),
+            title: Text(tasks[index]),
             trailing: Icon(Icons.keyboard_arrow_right),
 
 
             onTap: () {
-              setState(() {
-                Tasks.add('a');
-              });
               print('on touch ' + index.toString());
             },
 
+
             onLongPress: () {
               setState(() {
-                Tasks.removeAt(index);
+                tasks.removeAt(index);
               });
             },
 

@@ -1,6 +1,22 @@
 import 'package:grpc/grpc_web.dart';
 import './protother/protother.pbgrpc.dart';
 
+
+class Task {
+
+  String _projectName;
+  String _taskName;
+  String _date;
+
+  Task(projectName, taskName, date) : _projectName=projectName, _taskName=taskName, _date=date;
+
+
+  String getProjectName() {
+    return _projectName;
+  }  
+
+}
+
 class GrpcClient {
 
   TasksClient client;  
@@ -11,7 +27,31 @@ class GrpcClient {
     client = TasksClient(channel);
   }
 
-  pingServer() async {
+  Future<List<Task>> getTasks() async {
+
+    List<Task> tasksList = [];
+
+    try {
+      if (this.client != null) {
+        var respStream = client.getTasks(TaskRequest()..message="aloha");
+
+        await for (var resp in respStream) {
+          tasksList.add(Task(resp.project, resp.taskMane, resp.date));
+        }
+
+        return tasksList;
+      }
+    } catch (e) {
+      print('caught $e');
+    }
+
+    return null;
+
+  }
+
+
+
+  Future pingServer() async {
     try {
 
       if (this.client != null) { 
@@ -24,6 +64,6 @@ class GrpcClient {
     } catch(e) {
       print('caught $e');
     } 
-}
+  }
 
 }
