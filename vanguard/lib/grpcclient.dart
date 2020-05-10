@@ -5,15 +5,14 @@ import './protother/protother.pbgrpc.dart';
 
 class Task {
 
-  String _projectName;
-  String _taskName;
-  String _date;
+  String projectName;
+  String taskName;
+  String date;
 
-  Task(projectName, taskName, date) : _projectName=projectName, _taskName=taskName, _date=date;
-
+  Task(this.projectName, this.taskName, this.date);
 
   String getProjectName() {
-    return _projectName;
+    return this.projectName;
   }  
 
 }

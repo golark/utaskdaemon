@@ -91,9 +91,9 @@ class TaskListViewState extends State<TaskListView> {
                 itemBuilder: (context, index) {
                   return Card(
                       child: ListTile(
-                    leading: Icon(Icons.star),
+                    leading: Icon(Icons.alarm),
                     title: Text(snapshot.data[index].getProjectName()),
-                    trailing: Icon(Icons.keyboard_arrow_right),
+                    subtitle: Text(snapshot.data[index].taskName),
                     onTap: () {
                       print('on touch ' + index.toString());
                     },
@@ -168,10 +168,7 @@ Widget graphDailyTaskcount() {
   );
 }
 
-Widget graphProjectTaskCount() {
-  GrpcClient grpcClient = new GrpcClient();
-
-  List<charts.Color> colors = [
+  final List<charts.Color> colors = [
     charts.MaterialPalette.blue.shadeDefault,
     charts.MaterialPalette.cyan.shadeDefault,
     charts.MaterialPalette.deepOrange.shadeDefault,
@@ -184,6 +181,14 @@ Widget graphProjectTaskCount() {
     charts.MaterialPalette.green.shadeDefault,
     ];
 
+
+  charts.Color getColor(int index) {
+    return colors[index%colors.length];
+  }
+
+
+Widget graphProjectTaskCount() {
+  GrpcClient grpcClient = new GrpcClient();
   return FutureBuilder(
     future: grpcClient.getProjectTaskCount(),
     builder: (context, snapshot) {
@@ -191,7 +196,7 @@ Widget graphProjectTaskCount() {
         List<ProjectUTaskCount> projUtaskCount = [];
         for (var i = 0; i < snapshot.data.length; i++) {
           projUtaskCount.add(ProjectUTaskCount(
-              snapshot.data[i].projName, snapshot.data[i].count, colors[i]));
+              snapshot.data[i].projName, snapshot.data[i].count, getColor(i)));
         }
 
         var series = [
@@ -218,11 +223,11 @@ Widget graphProjectTaskCount() {
                                 charts.OutsideJustification.middle,
                             innerPadding: 18),
                         new charts.DatumLegend(
-                          position: charts.BehaviorPosition.bottom,
+                          position: charts.BehaviorPosition.end,
                           outsideJustification:
-                              charts.OutsideJustification.middleDrawArea,
+                              charts.OutsideJustification.end,
                           horizontalFirst: false,
-                          desiredMaxRows: 2,
+                          desiredMaxRows: 3,
                           cellPadding:
                               new EdgeInsets.only(right: 4.0, bottom: 4.0),
                           entryTextStyle: charts.TextStyleSpec(

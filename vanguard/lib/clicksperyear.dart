@@ -23,5 +23,25 @@ class ProjectUTaskCount {
   final int count;
   final charts.Color color;
 
-  ProjectUTaskCount(this.projName, this.count, this .color);
+  ProjectUTaskCount(this.projName, this.count, this.color);
+
+  final List<charts.Color> colors = [
+    charts.MaterialPalette.blue.shadeDefault,
+    charts.MaterialPalette.cyan.shadeDefault,
+    charts.MaterialPalette.deepOrange.shadeDefault,
+    charts.MaterialPalette.indigo.shadeDefault,
+    charts.MaterialPalette.purple.shadeDefault,
+    charts.MaterialPalette.teal.shadeDefault,
+    charts.MaterialPalette.yellow.shadeDefault,
+    charts.MaterialPalette.lime.shadeDefault,
+    charts.MaterialPalette.pink.shadeDefault,
+    charts.MaterialPalette.green.shadeDefault,
+    ];
+
+
+  charts.Color getColor(int index) {
+    return colors[index%colors.length];
+  }
+
+
 }
