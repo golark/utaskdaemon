@@ -57,10 +57,11 @@ func (u UTaskServer)  GetDailyTaskCount(req *protother.TaskRequest, strm prototh
 	}
 
 	// step 2 - count the number of tasks per day
-	count := CountNumUtasksPerDay(*t)
-	for d, c := range count {
-		log.WithFields(log.Fields{"date:":d}).Info("")
-		if err := strm.Send(&protother.DailyTaskCount{Date:d,Count:int32(c)}); err!=nil {
+	count, orderdKeys := CountNumUtasksPerDay(*t)
+	for _, k := range orderdKeys {
+		log.WithFields(log.Fields{"k":k}).Info("sending count")
+
+		if err := strm.Send(&protother.DailyTaskCount{Date:k,Count:int32(count[k])}); err!=nil {
 			return err
 		}
 	}

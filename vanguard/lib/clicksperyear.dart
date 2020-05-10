@@ -21,6 +21,7 @@ class UtasksPerDay {
 class ProjectUTaskCount {
   final String projName;
   final int count;
+  final charts.Color color;
 
-  ProjectUTaskCount(this.projName, this.count);
+  ProjectUTaskCount(this.projName, this.count, this .color);
 }

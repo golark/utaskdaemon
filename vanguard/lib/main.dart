@@ -171,6 +171,19 @@ Widget graphDailyTaskcount() {
 Widget graphProjectTaskCount() {
   GrpcClient grpcClient = new GrpcClient();
 
+  List<charts.Color> colors = [
+    charts.MaterialPalette.blue.shadeDefault,
+    charts.MaterialPalette.cyan.shadeDefault,
+    charts.MaterialPalette.deepOrange.shadeDefault,
+    charts.MaterialPalette.indigo.shadeDefault,
+    charts.MaterialPalette.purple.shadeDefault,
+    charts.MaterialPalette.teal.shadeDefault,
+    charts.MaterialPalette.yellow.shadeDefault,
+    charts.MaterialPalette.lime.shadeDefault,
+    charts.MaterialPalette.pink.shadeDefault,
+    charts.MaterialPalette.green.shadeDefault,
+    ];
+
   return FutureBuilder(
     future: grpcClient.getProjectTaskCount(),
     builder: (context, snapshot) {
@@ -178,7 +191,7 @@ Widget graphProjectTaskCount() {
         List<ProjectUTaskCount> projUtaskCount = [];
         for (var i = 0; i < snapshot.data.length; i++) {
           projUtaskCount.add(ProjectUTaskCount(
-              snapshot.data[i].projName, snapshot.data[i].count));
+              snapshot.data[i].projName, snapshot.data[i].count, colors[i]));
         }
 
         var series = [
@@ -186,6 +199,7 @@ Widget graphProjectTaskCount() {
             id: 'Clicks',
             domainFn: (ProjectUTaskCount countData, _) => countData.projName,
             measureFn: (ProjectUTaskCount countData, _) => countData.count,
+            colorFn: (ProjectUTaskCount countData, _) => countData.color,
             data: projUtaskCount,
           ),
         ];
@@ -204,7 +218,7 @@ Widget graphProjectTaskCount() {
                                 charts.OutsideJustification.middle,
                             innerPadding: 18),
                         new charts.DatumLegend(
-                          position: charts.BehaviorPosition.end,
+                          position: charts.BehaviorPosition.bottom,
                           outsideJustification:
                               charts.OutsideJustification.middleDrawArea,
                           horizontalFirst: false,

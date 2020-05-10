@@ -160,7 +160,6 @@ func QueryAllTasks() (*[]TaskTrace, error) {
 		log.WithFields(log.Fields{"err":err}).Error("error while getting documents")
 		return nil, err
 	}
-	log.WithFields(log.Fields{"rawdata":rawData}).Info("received documents")
 
 	// parse
 	var tSlc []TaskTrace

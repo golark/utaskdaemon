@@ -59,7 +59,7 @@ class GrpcClient {
         var respStream = client.getProjectTaskCount(TaskRequest()..message="aloha");
 
         await for (var resp in respStream) {
-          projUTaskCount.add(ProjectUTaskCount(resp.project, resp.count));
+          projUTaskCount.add(ProjectUTaskCount(resp.project, resp.count, null));
         }
 
         return projUTaskCount;

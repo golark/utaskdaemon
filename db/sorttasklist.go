@@ -60,11 +60,11 @@ func SortTaskList(taskTraces []TaskTrace) []TaskTrace {
 
 // CountNumUtasksPerDay
 // count the number of utasks registered per date in date order old -> new
-func CountNumUtasksPerDay(taskTraces []TaskTrace) map[string]int {
+func CountNumUtasksPerDay(taskTraces []TaskTrace) (map[string]int, []string) {
 
 
 	if taskTraces == nil {
-		return nil
+		return nil, nil
 	}
 
 	// step 1 - get unique dates
@@ -99,7 +99,7 @@ func CountNumUtasksPerDay(taskTraces []TaskTrace) map[string]int {
 	}
 	if len(uniqueTimes) == 0 { //make sure we have valid time entries
 		log.Error("no unique time entries extracted, bailing")
-		return nil
+		return nil, nil
 	}
 
 	// step 3 - get first and last dates
@@ -114,15 +114,15 @@ func CountNumUtasksPerDay(taskTraces []TaskTrace) map[string]int {
 		}
 	}
 
-	log.WithFields(log.Fields{"firstDate":firstDate,"lastDate":lastDate}).Info("Dates")
-
 	// step 4 - generate map from first to last date
 	// mapping [ date ] = num utasks
 	countMap := make(map[string]int)
-
-
+	var orderedKeys []string
 	for d := firstDate; d.Before(lastDate); d=d.AddDate(0,0,1) {
-		countMap[d.Format(layout)] = 0
+
+		key := d.Format(layout)
+		orderedKeys = append(orderedKeys, key)
+		countMap[key] = 0
 		log.WithFields(log.Fields{"d":d}).Info("")
 	}
 
@@ -137,7 +137,7 @@ func CountNumUtasksPerDay(taskTraces []TaskTrace) map[string]int {
 
 	log.WithFields(log.Fields{"count":countMap}).Info("count")
 
-	return countMap
+	return countMap, orderedKeys
 }
 
 // CountUtaskPerProject
