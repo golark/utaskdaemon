@@ -50,6 +50,28 @@ class GrpcClient {
 
   }
 
+  Future<List<ProjectUTaskCount>> getProjectTaskCount() async {
+
+    List<ProjectUTaskCount> projUTaskCount = [];
+
+    try {
+      if (this.client != null) {
+        var respStream = client.getProjectTaskCount(TaskRequest()..message="aloha");
+
+        await for (var resp in respStream) {
+          projUTaskCount.add(ProjectUTaskCount(resp.project, resp.count));
+        }
+
+        return projUTaskCount;
+      }
+    } catch(e) {
+      print('caught $e');
+    }
+
+    return null;
+  }
+
+
 
   Future<List<UtasksPerDay>> getUtasksPerDay() async {
 

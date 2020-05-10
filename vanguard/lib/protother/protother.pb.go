@@ -196,7 +196,7 @@ func (m *UTask) GetDate() string {
 	return ""
 }
 
-type DailyCount struct {
+type DailyTaskCount struct {
 	Date                 string   `protobuf:"bytes,1,opt,name=Date,proto3" json:"Date,omitempty"`
 	Count                int32    `protobuf:"varint,2,opt,name=Count,proto3" json:"Count,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
@@ -204,39 +204,86 @@ type DailyCount struct {
 	XXX_sizecache        int32    `json:"-"`
 }
 
-func (m *DailyCount) Reset()         { *m = DailyCount{} }
-func (m *DailyCount) String() string { return proto.CompactTextString(m) }
-func (*DailyCount) ProtoMessage()    {}
-func (*DailyCount) Descriptor() ([]byte, []int) {
+func (m *DailyTaskCount) Reset()         { *m = DailyTaskCount{} }
+func (m *DailyTaskCount) String() string { return proto.CompactTextString(m) }
+func (*DailyTaskCount) ProtoMessage()    {}
+func (*DailyTaskCount) Descriptor() ([]byte, []int) {
 	return fileDescriptor_17452f9afc4e24c8, []int{4}
 }
 
-func (m *DailyCount) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_DailyCount.Unmarshal(m, b)
+func (m *DailyTaskCount) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_DailyTaskCount.Unmarshal(m, b)
 }
-func (m *DailyCount) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_DailyCount.Marshal(b, m, deterministic)
+func (m *DailyTaskCount) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_DailyTaskCount.Marshal(b, m, deterministic)
 }
-func (m *DailyCount) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_DailyCount.Merge(m, src)
+func (m *DailyTaskCount) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_DailyTaskCount.Merge(m, src)
 }
-func (m *DailyCount) XXX_Size() int {
-	return xxx_messageInfo_DailyCount.Size(m)
+func (m *DailyTaskCount) XXX_Size() int {
+	return xxx_messageInfo_DailyTaskCount.Size(m)
 }
-func (m *DailyCount) XXX_DiscardUnknown() {
-	xxx_messageInfo_DailyCount.DiscardUnknown(m)
+func (m *DailyTaskCount) XXX_DiscardUnknown() {
+	xxx_messageInfo_DailyTaskCount.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_DailyCount proto.InternalMessageInfo
+var xxx_messageInfo_DailyTaskCount proto.InternalMessageInfo
 
-func (m *DailyCount) GetDate() string {
+func (m *DailyTaskCount) GetDate() string {
 	if m != nil {
 		return m.Date
 	}
 	return ""
 }
 
-func (m *DailyCount) GetCount() int32 {
+func (m *DailyTaskCount) GetCount() int32 {
+	if m != nil {
+		return m.Count
+	}
+	return 0
+}
+
+type ProjectTaskCount struct {
+	Project              string   `protobuf:"bytes,1,opt,name=Project,proto3" json:"Project,omitempty"`
+	Count                int32    `protobuf:"varint,2,opt,name=Count,proto3" json:"Count,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *ProjectTaskCount) Reset()         { *m = ProjectTaskCount{} }
+func (m *ProjectTaskCount) String() string { return proto.CompactTextString(m) }
+func (*ProjectTaskCount) ProtoMessage()    {}
+func (*ProjectTaskCount) Descriptor() ([]byte, []int) {
+	return fileDescriptor_17452f9afc4e24c8, []int{5}
+}
+
+func (m *ProjectTaskCount) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_ProjectTaskCount.Unmarshal(m, b)
+}
+func (m *ProjectTaskCount) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_ProjectTaskCount.Marshal(b, m, deterministic)
+}
+func (m *ProjectTaskCount) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_ProjectTaskCount.Merge(m, src)
+}
+func (m *ProjectTaskCount) XXX_Size() int {
+	return xxx_messageInfo_ProjectTaskCount.Size(m)
+}
+func (m *ProjectTaskCount) XXX_DiscardUnknown() {
+	xxx_messageInfo_ProjectTaskCount.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_ProjectTaskCount proto.InternalMessageInfo
+
+func (m *ProjectTaskCount) GetProject() string {
+	if m != nil {
+		return m.Project
+	}
+	return ""
+}
+
+func (m *ProjectTaskCount) GetCount() int32 {
 	if m != nil {
 		return m.Count
 	}
@@ -248,7 +295,8 @@ func init() {
 	proto.RegisterType((*PingReply)(nil), "protother.PingReply")
 	proto.RegisterType((*TaskRequest)(nil), "protother.TaskRequest")
 	proto.RegisterType((*UTask)(nil), "protother.UTask")
-	proto.RegisterType((*DailyCount)(nil), "protother.DailyCount")
+	proto.RegisterType((*DailyTaskCount)(nil), "protother.DailyTaskCount")
+	proto.RegisterType((*ProjectTaskCount)(nil), "protother.ProjectTaskCount")
 }
 
 func init() {
@@ -256,7 +304,7 @@ func init() {
 }
 
 var fileDescriptor_17452f9afc4e24c8 = []byte{
-	// 254 bytes of a gzipped FileDescriptorProto
+	// 287 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe2, 0xe2, 0x2f, 0x28, 0xca, 0x2f,
 	0xc9, 0x2f, 0xc9, 0x48, 0x2d, 0xd2, 0x03, 0xb3, 0x84, 0x38, 0xe1, 0x02, 0x4a, 0xea, 0x5c, 0xdc,
 	0x01, 0x99, 0x79, 0xe9, 0x41, 0xa9, 0x85, 0xa5, 0xa9, 0xc5, 0x25, 0x42, 0x12, 0x5c, 0xec, 0xbe,
@@ -265,14 +313,16 @@ var fileDescriptor_17452f9afc4e24c8 = []byte{
 	0xd9, 0x84, 0xcd, 0x0b, 0xe4, 0x62, 0x0d, 0x05, 0xa9, 0x14, 0x92, 0xe2, 0xe2, 0x00, 0xd1, 0xbe,
 	0x89, 0x79, 0x30, 0x35, 0x70, 0x3e, 0x48, 0x7b, 0x40, 0x51, 0x7e, 0x56, 0x6a, 0x72, 0x89, 0x04,
 	0x13, 0x44, 0x3b, 0x94, 0x2b, 0x24, 0xc4, 0xc5, 0xe2, 0x92, 0x58, 0x92, 0x2a, 0xc1, 0x0c, 0x16,
-	0x06, 0xb3, 0x95, 0xcc, 0xb8, 0xb8, 0x5c, 0x12, 0x33, 0x73, 0x2a, 0x9d, 0xf3, 0x4b, 0xf3, 0x10,
-	0x2a, 0x18, 0x11, 0x2a, 0x84, 0x44, 0xb8, 0x58, 0xc1, 0x92, 0x60, 0xd3, 0x58, 0x83, 0x20, 0x1c,
-	0xa3, 0x83, 0x8c, 0x5c, 0xac, 0x20, 0x2b, 0x8b, 0x85, 0x2c, 0xb8, 0x38, 0xdc, 0x53, 0x4b, 0x20,
-	0x6c, 0x31, 0x3d, 0x44, 0xb0, 0x21, 0x79, 0x49, 0x4a, 0x00, 0x49, 0x1c, 0xec, 0x03, 0x25, 0x06,
-	0x03, 0x46, 0x21, 0x37, 0x2e, 0x41, 0xf7, 0xd4, 0x12, 0xb0, 0xf5, 0x20, 0x31, 0x88, 0x13, 0x70,
-	0x19, 0x21, 0x8a, 0x24, 0x8e, 0x70, 0x31, 0xd8, 0x1c, 0x33, 0x2e, 0x16, 0x50, 0x30, 0xa3, 0x68,
-	0x45, 0x8a, 0x20, 0x29, 0x11, 0x0c, 0xf1, 0x82, 0x9c, 0x4a, 0x25, 0x86, 0x24, 0x36, 0xb0, 0xb0,
-	0x31, 0x20, 0x00, 0x00, 0xff, 0xff, 0xf3, 0x0e, 0x71, 0x32, 0xec, 0x01, 0x00, 0x00,
+	0x06, 0xb3, 0x95, 0xac, 0xb8, 0xf8, 0x5c, 0x12, 0x33, 0x73, 0x2a, 0x41, 0xda, 0x9d, 0xf3, 0x4b,
+	0xf3, 0x10, 0xaa, 0x18, 0x11, 0xaa, 0x84, 0x44, 0xb8, 0x58, 0xc1, 0x92, 0x60, 0x13, 0x59, 0x83,
+	0x20, 0x1c, 0x25, 0x27, 0x2e, 0x01, 0xa8, 0xd1, 0x08, 0xdd, 0x48, 0xb6, 0x33, 0xa2, 0xda, 0x8e,
+	0xd5, 0x0c, 0xa3, 0xa9, 0x4c, 0x5c, 0xac, 0x20, 0xdd, 0xc5, 0x42, 0x16, 0x5c, 0x1c, 0xee, 0xa9,
+	0x25, 0x10, 0xb6, 0x98, 0x1e, 0x22, 0xf8, 0x91, 0x82, 0x46, 0x4a, 0x00, 0x49, 0x1c, 0x1c, 0x12,
+	0x4a, 0x0c, 0x06, 0x8c, 0x42, 0x5e, 0x5c, 0x82, 0xee, 0xa9, 0x25, 0x68, 0xde, 0xc0, 0x65, 0x84,
+	0x24, 0x92, 0x38, 0xaa, 0x16, 0xb0, 0x59, 0x7e, 0x5c, 0xc2, 0xee, 0xa9, 0x25, 0x18, 0xde, 0xc2,
+	0x65, 0x9a, 0x34, 0x92, 0x38, 0xba, 0x26, 0xb0, 0x79, 0x66, 0x5c, 0x2c, 0xa0, 0x24, 0x80, 0x62,
+	0x00, 0x52, 0xe2, 0x91, 0x12, 0xc1, 0x10, 0x2f, 0xc8, 0xa9, 0x54, 0x62, 0x48, 0x62, 0x03, 0x0b,
+	0x1b, 0x03, 0x02, 0x00, 0x00, 0xff, 0xff, 0xd5, 0xb2, 0x63, 0xd7, 0x88, 0x02, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -289,6 +339,7 @@ const _ = grpc.SupportPackageIsVersion6
 type TasksClient interface {
 	GetTasks(ctx context.Context, in *TaskRequest, opts ...grpc.CallOption) (Tasks_GetTasksClient, error)
 	GetDailyTaskCount(ctx context.Context, in *TaskRequest, opts ...grpc.CallOption) (Tasks_GetDailyTaskCountClient, error)
+	GetProjectTaskCount(ctx context.Context, in *TaskRequest, opts ...grpc.CallOption) (Tasks_GetProjectTaskCountClient, error)
 	Ping(ctx context.Context, in *PingRequest, opts ...grpc.CallOption) (*PingReply, error)
 }
 
@@ -348,7 +399,7 @@ func (c *tasksClient) GetDailyTaskCount(ctx context.Context, in *TaskRequest, op
 }
 
 type Tasks_GetDailyTaskCountClient interface {
-	Recv() (*DailyCount, error)
+	Recv() (*DailyTaskCount, error)
 	grpc.ClientStream
 }
 
@@ -356,8 +407,40 @@ type tasksGetDailyTaskCountClient struct {
 	grpc.ClientStream
 }
 
-func (x *tasksGetDailyTaskCountClient) Recv() (*DailyCount, error) {
-	m := new(DailyCount)
+func (x *tasksGetDailyTaskCountClient) Recv() (*DailyTaskCount, error) {
+	m := new(DailyTaskCount)
+	if err := x.ClientStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
+func (c *tasksClient) GetProjectTaskCount(ctx context.Context, in *TaskRequest, opts ...grpc.CallOption) (Tasks_GetProjectTaskCountClient, error) {
+	stream, err := c.cc.NewStream(ctx, &_Tasks_serviceDesc.Streams[2], "/protother.Tasks/GetProjectTaskCount", opts...)
+	if err != nil {
+		return nil, err
+	}
+	x := &tasksGetProjectTaskCountClient{stream}
+	if err := x.ClientStream.SendMsg(in); err != nil {
+		return nil, err
+	}
+	if err := x.ClientStream.CloseSend(); err != nil {
+		return nil, err
+	}
+	return x, nil
+}
+
+type Tasks_GetProjectTaskCountClient interface {
+	Recv() (*ProjectTaskCount, error)
+	grpc.ClientStream
+}
+
+type tasksGetProjectTaskCountClient struct {
+	grpc.ClientStream
+}
+
+func (x *tasksGetProjectTaskCountClient) Recv() (*ProjectTaskCount, error) {
+	m := new(ProjectTaskCount)
 	if err := x.ClientStream.RecvMsg(m); err != nil {
 		return nil, err
 	}
@@ -377,6 +460,7 @@ func (c *tasksClient) Ping(ctx context.Context, in *PingRequest, opts ...grpc.Ca
 type TasksServer interface {
 	GetTasks(*TaskRequest, Tasks_GetTasksServer) error
 	GetDailyTaskCount(*TaskRequest, Tasks_GetDailyTaskCountServer) error
+	GetProjectTaskCount(*TaskRequest, Tasks_GetProjectTaskCountServer) error
 	Ping(context.Context, *PingRequest) (*PingReply, error)
 }
 
@@ -389,6 +473,9 @@ func (*UnimplementedTasksServer) GetTasks(req *TaskRequest, srv Tasks_GetTasksSe
 }
 func (*UnimplementedTasksServer) GetDailyTaskCount(req *TaskRequest, srv Tasks_GetDailyTaskCountServer) error {
 	return status.Errorf(codes.Unimplemented, "method GetDailyTaskCount not implemented")
+}
+func (*UnimplementedTasksServer) GetProjectTaskCount(req *TaskRequest, srv Tasks_GetProjectTaskCountServer) error {
+	return status.Errorf(codes.Unimplemented, "method GetProjectTaskCount not implemented")
 }
 func (*UnimplementedTasksServer) Ping(ctx context.Context, req *PingRequest) (*PingReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Ping not implemented")
@@ -428,7 +515,7 @@ func _Tasks_GetDailyTaskCount_Handler(srv interface{}, stream grpc.ServerStream)
 }
 
 type Tasks_GetDailyTaskCountServer interface {
-	Send(*DailyCount) error
+	Send(*DailyTaskCount) error
 	grpc.ServerStream
 }
 
@@ -436,7 +523,28 @@ type tasksGetDailyTaskCountServer struct {
 	grpc.ServerStream
 }
 
-func (x *tasksGetDailyTaskCountServer) Send(m *DailyCount) error {
+func (x *tasksGetDailyTaskCountServer) Send(m *DailyTaskCount) error {
+	return x.ServerStream.SendMsg(m)
+}
+
+func _Tasks_GetProjectTaskCount_Handler(srv interface{}, stream grpc.ServerStream) error {
+	m := new(TaskRequest)
+	if err := stream.RecvMsg(m); err != nil {
+		return err
+	}
+	return srv.(TasksServer).GetProjectTaskCount(m, &tasksGetProjectTaskCountServer{stream})
+}
+
+type Tasks_GetProjectTaskCountServer interface {
+	Send(*ProjectTaskCount) error
+	grpc.ServerStream
+}
+
+type tasksGetProjectTaskCountServer struct {
+	grpc.ServerStream
+}
+
+func (x *tasksGetProjectTaskCountServer) Send(m *ProjectTaskCount) error {
 	return x.ServerStream.SendMsg(m)
 }
 
@@ -476,6 +584,11 @@ var _Tasks_serviceDesc = grpc.ServiceDesc{
 		{
 			StreamName:    "GetDailyTaskCount",
 			Handler:       _Tasks_GetDailyTaskCount_Handler,
+			ServerStreams: true,
+		},
+		{
+			StreamName:    "GetProjectTaskCount",
+			Handler:       _Tasks_GetProjectTaskCount_Handler,
 			ServerStreams: true,
 		},
 	},

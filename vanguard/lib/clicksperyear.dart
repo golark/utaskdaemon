@@ -11,11 +11,16 @@ class ClicksPerYear {
             r: color.red, g: color.green, b: color.blue, a: color.alpha);
 }
 
-
 class UtasksPerDay {
   final String date;
   final int count;
 
   UtasksPerDay(this.date, this.count); 
+}
 
+class ProjectUTaskCount {
+  final String projName;
+  final int count;
+
+  ProjectUTaskCount(this.projName, this.count);
 }
