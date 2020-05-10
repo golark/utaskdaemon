@@ -153,27 +153,27 @@ class UTask extends $pb.GeneratedMessage {
   void clearDate() => clearField(3);
 }
 
-class DailyCount extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo('DailyCount', package: const $pb.PackageName('protother'), createEmptyInstance: create)
+class DailyTaskCount extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo('DailyTaskCount', package: const $pb.PackageName('protother'), createEmptyInstance: create)
     ..aOS(1, 'Date', protoName: 'Date')
     ..a<$core.int>(2, 'Count', $pb.PbFieldType.O3, protoName: 'Count')
     ..hasRequiredFields = false
   ;
 
-  DailyCount._() : super();
-  factory DailyCount() => create();
-  factory DailyCount.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
-  factory DailyCount.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
-  DailyCount clone() => DailyCount()..mergeFromMessage(this);
-  DailyCount copyWith(void Function(DailyCount) updates) => super.copyWith((message) => updates(message as DailyCount));
+  DailyTaskCount._() : super();
+  factory DailyTaskCount() => create();
+  factory DailyTaskCount.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory DailyTaskCount.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  DailyTaskCount clone() => DailyTaskCount()..mergeFromMessage(this);
+  DailyTaskCount copyWith(void Function(DailyTaskCount) updates) => super.copyWith((message) => updates(message as DailyTaskCount));
   $pb.BuilderInfo get info_ => _i;
   @$core.pragma('dart2js:noInline')
-  static DailyCount create() => DailyCount._();
-  DailyCount createEmptyInstance() => create();
-  static $pb.PbList<DailyCount> createRepeated() => $pb.PbList<DailyCount>();
+  static DailyTaskCount create() => DailyTaskCount._();
+  DailyTaskCount createEmptyInstance() => create();
+  static $pb.PbList<DailyTaskCount> createRepeated() => $pb.PbList<DailyTaskCount>();
   @$core.pragma('dart2js:noInline')
-  static DailyCount getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<DailyCount>(create);
-  static DailyCount _defaultInstance;
+  static DailyTaskCount getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<DailyTaskCount>(create);
+  static DailyTaskCount _defaultInstance;
 
   @$pb.TagNumber(1)
   $core.String get date => $_getSZ(0);
@@ -183,6 +183,47 @@ class DailyCount extends $pb.GeneratedMessage {
   $core.bool hasDate() => $_has(0);
   @$pb.TagNumber(1)
   void clearDate() => clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.int get count => $_getIZ(1);
+  @$pb.TagNumber(2)
+  set count($core.int v) { $_setSignedInt32(1, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasCount() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearCount() => clearField(2);
+}
+
+class ProjectTaskCount extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo('ProjectTaskCount', package: const $pb.PackageName('protother'), createEmptyInstance: create)
+    ..aOS(1, 'Project', protoName: 'Project')
+    ..a<$core.int>(2, 'Count', $pb.PbFieldType.O3, protoName: 'Count')
+    ..hasRequiredFields = false
+  ;
+
+  ProjectTaskCount._() : super();
+  factory ProjectTaskCount() => create();
+  factory ProjectTaskCount.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory ProjectTaskCount.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  ProjectTaskCount clone() => ProjectTaskCount()..mergeFromMessage(this);
+  ProjectTaskCount copyWith(void Function(ProjectTaskCount) updates) => super.copyWith((message) => updates(message as ProjectTaskCount));
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static ProjectTaskCount create() => ProjectTaskCount._();
+  ProjectTaskCount createEmptyInstance() => create();
+  static $pb.PbList<ProjectTaskCount> createRepeated() => $pb.PbList<ProjectTaskCount>();
+  @$core.pragma('dart2js:noInline')
+  static ProjectTaskCount getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<ProjectTaskCount>(create);
+  static ProjectTaskCount _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get project => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set project($core.String v) { $_setString(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasProject() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearProject() => clearField(1);
 
   @$pb.TagNumber(2)
   $core.int get count => $_getIZ(1);

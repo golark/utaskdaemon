@@ -25,9 +25,10 @@ func (u UTaskServer) Ping(ctx context.Context, req *protother.PingRequest) (*pro
 	return &reply, nil
 }
 
-func (u UTaskServer)  GetTasks(req *protother.TaskRequest, strm protother.Tasks_GetTasksServer) error{
+//
+func (u UTaskServer) GetTasks(req *protother.TaskRequest, strm protother.Tasks_GetTasksServer) error{
 
-	tasks, err := GetTasks()
+	tasks, err := QueryAllTasks()
 	if err != nil {
 		log.WithFields(log.Fields{"err": err}).Error("can not get tasks")
 		return err
@@ -35,7 +36,6 @@ func (u UTaskServer)  GetTasks(req *protother.TaskRequest, strm protother.Tasks_
 
 	// stream
 	for _, t := range *tasks {
-
 		utask := protother.UTask{Project:t.T.ProjectName, TaskMane:t.T.TaskName, Date:t.SDate}
 		if err := strm.Send(&utask); err != nil {
 			log.WithFields(log.Fields{"err": err}).Error("error streaming")
@@ -45,17 +45,45 @@ func (u UTaskServer)  GetTasks(req *protother.TaskRequest, strm protother.Tasks_
 	return nil
 }
 
+// GetDailyTaskCount
+// return number of tasks per day
 func (u UTaskServer)  GetDailyTaskCount(req *protother.TaskRequest, strm protother.Tasks_GetDailyTaskCountServer) error {
 
-	t, err := GetTasks()
+	// step 1 - get all tasks from db
+	t, err := QueryAllTasks()
 	if err != nil {
 		log.WithFields(log.Fields{"err":err}).Error("cant get tasks from db")
 		return err
 	}
 
-	projCount := CountProjects(*t)
-	for p, c := range projCount {
-		if err := strm.Send(&protother.DailyCount{Date:p,Count:int32(c)}); err!=nil {
+	// step 2 - count the number of tasks per day
+	count := CountNumUtasksPerDay(*t)
+	for d, c := range count {
+		log.WithFields(log.Fields{"date:":d}).Info("")
+		if err := strm.Send(&protother.DailyTaskCount{Date:d,Count:int32(c)}); err!=nil {
+			return err
+		}
+	}
+
+	return nil
+}
+
+
+// GetProjectTaskCount
+// returns the number of utasks per project
+func (u UTaskServer)  GetProjectTaskCount(req *protother.TaskRequest, stream protother.Tasks_GetProjectTaskCountServer) error {
+
+	// step 1 - get all tasks from db
+	t, err := QueryAllTasks()
+	if err != nil {
+		log.WithFields(log.Fields{"err":err}).Error("cant get tasks from db")
+		return err
+	}
+
+	// step 2 - count the utask per project and stream
+	count := CountUtaskPerProject(*t)
+	for p, c := range count {
+		if err := stream.Send(&protother.ProjectTaskCount{Project:p, Count:int32(c)}); err!=nil {
 			return err
 		}
 	}

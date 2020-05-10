@@ -6,7 +6,9 @@ package protother;
 service Tasks {
   rpc GetTasks (TaskRequest) returns (stream UTask) {}
 
-  rpc GetDailyTaskCount (TaskRequest) returns (stream DailyCount) {}
+  rpc GetDailyTaskCount (TaskRequest) returns (stream DailyTaskCount) {}
+
+  rpc GetProjectTaskCount (TaskRequest) returns (stream ProjectTaskCount) {}
 
   rpc Ping (PingRequest) returns (PingReply) {}
 }
@@ -29,7 +31,12 @@ message UTask {
   string Date = 3;
 }
 
-message DailyCount {
+message DailyTaskCount {
   string Date = 1;
+  int32 Count = 2;
+}
+
+message ProjectTaskCount {
+  string Project = 1;
   int32 Count = 2;
 }

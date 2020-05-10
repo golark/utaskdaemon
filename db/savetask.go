@@ -138,9 +138,9 @@ func readFileAndUnmarshal(fileName string) ([]TaskTrace, error) {
 	return t, nil
 }
 
-// GetTasks
+// QueryAllTasks
 // return all task traces by first searching in db and then the file
-func GetTasks() (*[]TaskTrace, error) {
+func QueryAllTasks() (*[]TaskTrace, error) {
 
 	// check if the db can be reached
 	// step 1 -  connect

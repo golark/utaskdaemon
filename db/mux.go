@@ -47,7 +47,7 @@ func (a muxContext) getAllTasksSorted(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Access-Control-Allow-Origin", "*") // when calling rest API through browsers this is needed
 
-	t, err := GetTasks()
+	t, err := QueryAllTasks()
 
 	*t = SortTaskList(*t)
 
@@ -66,7 +66,7 @@ func (a muxContext) getAllTasks(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Access-Control-Allow-Origin", "*") // when calling rest API through browsers this is needed
 
-	t, err := GetTasks()
+	t, err := QueryAllTasks()
 
 	if err != nil {
 		log.WithFields(log.Fields{"err":err}).Error("cant get tasks from db")
@@ -89,12 +89,12 @@ func (a muxContext) getProjectCounts(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Access-Control-Allow-Origin", "*") // when calling rest API through browsers this is needed
 
-	t, err := GetTasks()
+	t, err := QueryAllTasks()
 	if err != nil {
 		log.WithFields(log.Fields{"err":err}).Error("cant get tasks from db")
 		return
 	}
-	projCount := CountProjects(*t)
+	projCount := CountUtaskPerProject(*t)
 
 	var plotData PlotData
 
@@ -117,7 +117,7 @@ func (a muxContext) getUtaskCntPerDay(w http.ResponseWriter, r *http.Request) {
 	// when calling rest API through browsers this is needed
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 
-	t, err := GetTasks()
+	t, err := QueryAllTasks()
 	if err != nil {
 		log.WithFields(log.Fields{"err":err}).Error("cant get tasks from db")
 		return

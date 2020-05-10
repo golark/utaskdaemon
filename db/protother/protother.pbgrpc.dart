@@ -19,10 +19,16 @@ class TasksClient extends $grpc.Client {
       ($0.TaskRequest value) => value.writeToBuffer(),
       ($core.List<$core.int> value) => $0.UTask.fromBuffer(value));
   static final _$getDailyTaskCount =
-      $grpc.ClientMethod<$0.TaskRequest, $0.DailyCount>(
+      $grpc.ClientMethod<$0.TaskRequest, $0.DailyTaskCount>(
           '/protother.Tasks/GetDailyTaskCount',
           ($0.TaskRequest value) => value.writeToBuffer(),
-          ($core.List<$core.int> value) => $0.DailyCount.fromBuffer(value));
+          ($core.List<$core.int> value) => $0.DailyTaskCount.fromBuffer(value));
+  static final _$getProjectTaskCount =
+      $grpc.ClientMethod<$0.TaskRequest, $0.ProjectTaskCount>(
+          '/protother.Tasks/GetProjectTaskCount',
+          ($0.TaskRequest value) => value.writeToBuffer(),
+          ($core.List<$core.int> value) =>
+              $0.ProjectTaskCount.fromBuffer(value));
   static final _$ping = $grpc.ClientMethod<$0.PingRequest, $0.PingReply>(
       '/protother.Tasks/Ping',
       ($0.PingRequest value) => value.writeToBuffer(),
@@ -38,10 +44,20 @@ class TasksClient extends $grpc.Client {
     return $grpc.ResponseStream(call);
   }
 
-  $grpc.ResponseStream<$0.DailyCount> getDailyTaskCount($0.TaskRequest request,
+  $grpc.ResponseStream<$0.DailyTaskCount> getDailyTaskCount(
+      $0.TaskRequest request,
       {$grpc.CallOptions options}) {
     final call = $createCall(
         _$getDailyTaskCount, $async.Stream.fromIterable([request]),
+        options: options);
+    return $grpc.ResponseStream(call);
+  }
+
+  $grpc.ResponseStream<$0.ProjectTaskCount> getProjectTaskCount(
+      $0.TaskRequest request,
+      {$grpc.CallOptions options}) {
+    final call = $createCall(
+        _$getProjectTaskCount, $async.Stream.fromIterable([request]),
         options: options);
     return $grpc.ResponseStream(call);
   }
@@ -65,13 +81,20 @@ abstract class TasksServiceBase extends $grpc.Service {
         true,
         ($core.List<$core.int> value) => $0.TaskRequest.fromBuffer(value),
         ($0.UTask value) => value.writeToBuffer()));
-    $addMethod($grpc.ServiceMethod<$0.TaskRequest, $0.DailyCount>(
+    $addMethod($grpc.ServiceMethod<$0.TaskRequest, $0.DailyTaskCount>(
         'GetDailyTaskCount',
         getDailyTaskCount_Pre,
         false,
         true,
         ($core.List<$core.int> value) => $0.TaskRequest.fromBuffer(value),
-        ($0.DailyCount value) => value.writeToBuffer()));
+        ($0.DailyTaskCount value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$0.TaskRequest, $0.ProjectTaskCount>(
+        'GetProjectTaskCount',
+        getProjectTaskCount_Pre,
+        false,
+        true,
+        ($core.List<$core.int> value) => $0.TaskRequest.fromBuffer(value),
+        ($0.ProjectTaskCount value) => value.writeToBuffer()));
     $addMethod($grpc.ServiceMethod<$0.PingRequest, $0.PingReply>(
         'Ping',
         ping_Pre,
@@ -86,9 +109,14 @@ abstract class TasksServiceBase extends $grpc.Service {
     yield* getTasks(call, await request);
   }
 
-  $async.Stream<$0.DailyCount> getDailyTaskCount_Pre(
+  $async.Stream<$0.DailyTaskCount> getDailyTaskCount_Pre(
       $grpc.ServiceCall call, $async.Future<$0.TaskRequest> request) async* {
     yield* getDailyTaskCount(call, await request);
+  }
+
+  $async.Stream<$0.ProjectTaskCount> getProjectTaskCount_Pre(
+      $grpc.ServiceCall call, $async.Future<$0.TaskRequest> request) async* {
+    yield* getProjectTaskCount(call, await request);
   }
 
   $async.Future<$0.PingReply> ping_Pre(
@@ -98,7 +126,9 @@ abstract class TasksServiceBase extends $grpc.Service {
 
   $async.Stream<$0.UTask> getTasks(
       $grpc.ServiceCall call, $0.TaskRequest request);
-  $async.Stream<$0.DailyCount> getDailyTaskCount(
+  $async.Stream<$0.DailyTaskCount> getDailyTaskCount(
+      $grpc.ServiceCall call, $0.TaskRequest request);
+  $async.Stream<$0.ProjectTaskCount> getProjectTaskCount(
       $grpc.ServiceCall call, $0.TaskRequest request);
   $async.Future<$0.PingReply> ping(
       $grpc.ServiceCall call, $0.PingRequest request);
