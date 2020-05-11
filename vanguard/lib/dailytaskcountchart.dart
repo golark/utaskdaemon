@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:vanguard/grpcclient.dart';
 import 'package:vanguard/progressindicator.dart';
-import 'package:vanguard/utask.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
+import 'package:vanguard/plot.dart';
 
 Widget graphDailyTaskcount() {
   GrpcClient grpcClient = new GrpcClient();
@@ -10,20 +10,20 @@ Widget graphDailyTaskcount() {
   return FutureBuilder(
     future: grpcClient.getUtasksPerDay(),
     builder: (context, snapshot) {
-
-      // chec if we have data
+      // check if we have data
       if (snapshot.hasData) {
-        List<TasksPerDay> dataUtask = [];
+        List<Point> dataUtask = [];
         for (var i = 0; i < snapshot.data.length; i++) {
           dataUtask
-              .add(TasksPerDay(snapshot.data[i].date, snapshot.data[i].count));
+              .add(Point(snapshot.data[i].x, snapshot.data[i].y));
         }
 
         var series = [
           new charts.Series(
             id: 'Clicks',
-            domainFn: (TasksPerDay countData, _) => countData.date,
-            measureFn: (TasksPerDay countData, _) => countData.count,
+            domainFn: (Point point, _) => point.x,
+            measureFn: (Point point, _) => point.y,
+            colorFn: (Point point, _) => point.getColor(),
             data: dataUtask,
           ),
         ];
@@ -50,6 +50,7 @@ Widget graphDailyTaskcount() {
                       behaviors: behaviours,
                     ))));
       }
+
       // waiting for data, display a progress indicator
       return progressIndicator();
     },

@@ -24,7 +24,7 @@ class UTaskApp extends StatelessWidget {
           title: Text('utasks'),
         ),
 
-        // body
+        // body dashboard
         body: dashboard(),
       ),
 
@@ -33,8 +33,7 @@ class UTaskApp extends StatelessWidget {
   }
 }
 
-// bodyLayout
-// consisting of task list and charts
+// dashboard layout
 Widget dashboard() {
   return Container(
     child: Row(
@@ -43,6 +42,7 @@ Widget dashboard() {
   );
 }
 
+// dashboardWidgets
 var dashboardWidgets = <Widget>[
 
 

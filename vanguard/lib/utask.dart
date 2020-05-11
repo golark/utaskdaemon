@@ -1,10 +1,10 @@
 import 'package:charts_flutter/flutter.dart' as charts;
 
-class TasksPerDay {
+class UtasksPerDay {
   final String date;
   final int count;
 
-  TasksPerDay(this.date, this.count); 
+  UtasksPerDay(this.date, this.count); 
 }
 
 class ProjectUTaskCount {
@@ -13,6 +13,7 @@ class ProjectUTaskCount {
   final charts.Color color;
 
   ProjectUTaskCount(this.projName, this.count, this.color);
+
 }
 
 class Task {

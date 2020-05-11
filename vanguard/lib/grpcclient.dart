@@ -1,8 +1,7 @@
 import 'package:grpc/grpc_web.dart';
 import './protother/protother.pbgrpc.dart';
 import 'package:vanguard/utask.dart';
-
-
+import 'package:vanguard/plot.dart';
 
 class GrpcClient {
 
@@ -59,16 +58,16 @@ class GrpcClient {
 
 
 
-  Future<List<TasksPerDay>> getUtasksPerDay() async {
+  Future<List<Point>> getUtasksPerDay() async {
 
-    List<TasksPerDay> taskCount = [];
+    List<Point> taskCount = [];
 
     try {
       if (this.client != null) {
         var respStream = client.getDailyTaskCount(TaskRequest()..message="aloha");
 
         await for (var resp in respStream) {
-          taskCount.add(TasksPerDay(resp.date, resp.count));
+          taskCount.add(Point(resp.date, resp.count));
         }
 
         return taskCount;
