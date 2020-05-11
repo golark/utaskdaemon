@@ -12,9 +12,9 @@ Widget graphDailyTaskcount() {
     builder: (context, snapshot) {
       // check if we have data
       if (snapshot.hasData) {
-        List<Point> dataUtask = [];
+        List<Point> points = [];
         for (var i = 0; i < snapshot.data.length; i++) {
-          dataUtask
+          points
               .add(Point(snapshot.data[i].x, snapshot.data[i].y));
         }
 
@@ -24,7 +24,7 @@ Widget graphDailyTaskcount() {
             domainFn: (Point point, _) => point.x,
             measureFn: (Point point, _) => point.y,
             colorFn: (Point point, _) => point.getColor(),
-            data: dataUtask,
+            data: points,
           ),
         ];
 

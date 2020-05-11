@@ -1,5 +1,4 @@
 import 'package:charts_flutter/flutter.dart' as charts;
-import 'package:vanguard/colorprovider.dart';
 
 // Point
 // represents a single point on a plot
@@ -17,7 +16,6 @@ class Point{
     return charts.Color.fromHex(code:colorCode);
   }
 }
-
 
 class Plot {
 

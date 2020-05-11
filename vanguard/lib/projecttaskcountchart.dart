@@ -1,9 +1,9 @@
 import 'package:vanguard/grpcclient.dart';
 import 'package:vanguard/progressindicator.dart';
-import 'package:vanguard/utask.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:flutter/material.dart';
-import 'package:vanguard/colorprovider.dart';
+import 'package:vanguard/colorgenerator.dart';
+import 'package:vanguard/plot.dart';
 
 Widget graphProjectTaskCount() {
   GrpcClient grpcClient = new GrpcClient();
@@ -12,19 +12,19 @@ Widget graphProjectTaskCount() {
     builder: (context, snapshot) {
       // check if we have data
       if (snapshot.hasData) {
-        List<ProjectUTaskCount> projUtaskCount = [];
+        List<Point> points = [];
         for (var i = 0; i < snapshot.data.length; i++) {
-          projUtaskCount.add(ProjectUTaskCount(
-              snapshot.data[i].projName, snapshot.data[i].count, getColor(i)));
+          points.add(Point(
+              snapshot.data[i].x, snapshot.data[i].y, colorCode: ColorGenerator.getColorCode(i)));
         }
 
         var series = [
           new charts.Series(
             id: 'Clicks',
-            domainFn: (ProjectUTaskCount countData, _) => countData.projName,
-            measureFn: (ProjectUTaskCount countData, _) => countData.count,
-            colorFn: (ProjectUTaskCount countData, _) => countData.color,
-            data: projUtaskCount,
+            domainFn: (Point point, _) => point.x,
+            measureFn: (Point point, _) => point.y,
+            colorFn: (Point point, _) => point.getColor(),
+            data: points,
           ),
         ];
 

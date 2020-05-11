@@ -35,16 +35,16 @@ class GrpcClient {
 
   }
 
-  Future<List<ProjectUTaskCount>> getProjectTaskCount() async {
+  Future<List<Point>> getProjectTaskCount() async {
 
-    List<ProjectUTaskCount> projUTaskCount = [];
+    List<Point> projUTaskCount = [];
 
     try {
       if (this.client != null) {
         var respStream = client.getProjectTaskCount(TaskRequest()..message="aloha");
 
         await for (var resp in respStream) {
-          projUTaskCount.add(ProjectUTaskCount(resp.project, resp.count, null));
+          projUTaskCount.add(Point(resp.project, resp.count));
         }
 
         return projUTaskCount;
@@ -55,8 +55,6 @@ class GrpcClient {
 
     return null;
   }
-
-
 
   Future<List<Point>> getUtasksPerDay() async {
 
