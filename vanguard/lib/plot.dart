@@ -17,6 +17,8 @@ class Point {
   final int y;
   final String colorCode;
   final String title;
+  final String xLabel;
+  final String yLabel;
   ChartType chartType;
 
   static const defaultColorCode = "#00A0B7";
@@ -24,14 +26,9 @@ class Point {
   Point(this.x, this.y,
       {this.colorCode = defaultColorCode,
       this.chartType = ChartType.LINE_CHART,
-      this.title=""});
-
-  dynamic getX() {
-    if (this.chartType == ChartType.LINE_CHART) {
-      return int.parse(x);
-    }
-    return x;
-  }
+      this.title="",
+      this.xLabel="",
+      this.yLabel=""});
 
   charts.Color getColor() {
     return charts.Color.fromHex(code: colorCode);
@@ -45,12 +42,12 @@ Future<List<Point>> samplePlot() async {
 
   List<Point> points = [];
 
+  var reqMessage = PlotRequest()..message = "DailyTaskCount";
   try {
-    var respStream =
-        client.getProjectTaskCount(TaskRequest()..message = "aloha");
+    var respStream = client.getPlot(reqMessage);
 
     await for (var resp in respStream) {
-      points.add(Point(resp.project, resp.count, chartType: resp.chartType));
+      points.add(Point(resp.x, resp.y, chartType: resp.eChartType, title: resp.title, xLabel: resp.xLabel, yLabel: resp.yLabel));
     }
 
     return points;
@@ -75,13 +72,17 @@ Widget plotWidget(PlotFuncType plotFunc) {
           points.add(Point(snapshot.data[i].x, snapshot.data[i].y, chartType: snapshot.data[i].chartType));
         }
 
+        var title = snapshot.data[0].title;
+        var xLabel = snapshot.data[0].xLabel;
+        var yLabel = snapshot.data[0].yLabel;
+
         // step - set series
         var series;
         if (snapshot.data[0].chartType == ChartType.LINE_CHART) {
           series = [
             new charts.Series(
               id: 'Clicks',
-              domainFn: (Point point, _) => point.getX(),
+              domainFn: (Point point, _) => int.parse(point.x),
               measureFn: (Point point, _) => point.y,
               colorFn: (Point point, _) => point.getColor(),
               data: points,
@@ -91,7 +92,7 @@ Widget plotWidget(PlotFuncType plotFunc) {
           series = [
             new charts.Series(
               id: 'Clicks',
-              domainFn: (Point point, _) => point.getX(),
+              domainFn: (Point point, _) => point.x,
               measureFn: (Point point, _) => point.y,
               colorFn: (Point point, _) => point.getColor(),
               data: points,
@@ -101,12 +102,16 @@ Widget plotWidget(PlotFuncType plotFunc) {
 
         // step - set behaviours
         var behaviours = [
-          new charts.ChartTitle('Daily Task Count',
+          new charts.ChartTitle(title, // title
               behaviorPosition: charts.BehaviorPosition.top,
               titleOutsideJustification: charts.OutsideJustification.middle,
               innerPadding: 18),
-          new charts.ChartTitle('Task Count',
+          new charts.ChartTitle(yLabel, // yLabel
               behaviorPosition: charts.BehaviorPosition.start,
+              titleOutsideJustification:
+                  charts.OutsideJustification.middleDrawArea),
+          new charts.ChartTitle(xLabel,  // xLabel
+              behaviorPosition: charts.BehaviorPosition.bottom,
               titleOutsideJustification:
                   charts.OutsideJustification.middleDrawArea),
         ];
