@@ -47,7 +47,11 @@ func (u UTaskServer) GetTasks(req *protother.TaskRequest, strm protother.Tasks_G
 	return nil
 }
 
+
 func (u UTaskServer) GetPlot(req *protother.PlotRequest, stream protother.Tasks_GetPlotServer) error {
+
+	ColorCodes := []string{"#fb7e7e", "#b6fb7e", "#7ea4fb", "#937efb", "#fbae7e", "#ec7efb", "#7efbe0", "#40ff1f", "#fbec7e", "#1fffe5", "#fff81f", "#ff1f1f", "#1f40ff", "#9ba9fd",
+		"#88c20c", "#eb33db", "#fedd20", "#d8eb33", "#eb3933", "#3398eb", "#ffaa00","#003300", "#f279ea", "#3995e6", "#9d3df2", "#3d6df2", "#a68a53", "#435943", "#3c0059" }
 
 	// step 1 - get all tasks from db
 	t, err := QueryAllTasks()
@@ -70,10 +74,12 @@ func (u UTaskServer) GetPlot(req *protother.PlotRequest, stream protother.Tasks_
 
 	case "ProjectCount":
 		count := CountUtaskPerProject(*t)
+		colorIndex := 0
 		for p, c := range count {
-			if err := stream.Send(&protother.PointReply{ EChartType:protother.ChartType_PIE_CHART, X:p, Y:int32(c), XLabel:"date", YLabel:"task count", Title:"Daily UTask Count" }); err!=nil {
+			if err := stream.Send(&protother.PointReply{ EChartType:protother.ChartType_PIE_CHART, X:p, Y:int32(c), XLabel:"date", YLabel:"task count", Title:"Daily UTask Count" , ColorCode:ColorCodes[colorIndex%len(ColorCodes)]}); err!=nil {
 				return err
 			}
+			colorIndex++
 		}
 
 	default:

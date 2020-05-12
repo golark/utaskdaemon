@@ -58,9 +58,8 @@ var dashboardWidgets = <Widget>[
     flex: 6,
     child: Column(
       children: <Widget>[
-        graphDailyTaskcount(),
-        graphProjectTaskCount(),
-        plotWidget(samplePlot),
+        plotWidget(dailyTaskCountPlot),
+        plotWidget(projectTaskCountPlot),
       ],
     ),
   ),

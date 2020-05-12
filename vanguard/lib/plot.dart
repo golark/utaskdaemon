@@ -1,14 +1,10 @@
 import 'package:charts_flutter/flutter.dart' as charts;
+import 'package:vanguard/grpcclient.dart';
 import './protother/protother.pbenum.dart';
 import 'package:flutter/material.dart';
 import 'package:vanguard/progressindicator.dart';
 import 'package:vanguard/protother/protother.pbgrpc.dart';
-import 'package:grpc/grpc_web.dart';
 import './protother/protother.pbgrpc.dart';
-
-class Plot {
-  List<Point> points = [];
-}
 
 // Point
 // represents a single point on a plot
@@ -35,29 +31,6 @@ class Point {
   }
 }
 
-Future<List<Point>> samplePlot() async {
-  final channel = GrpcWebClientChannel.xhr(Uri.parse('http://localhost:8080'));
-  TasksClient client;
-  client = TasksClient(channel);
-
-  List<Point> points = [];
-
-  var reqMessage = PlotRequest()..message = "DailyTaskCount";
-  try {
-    var respStream = client.getPlot(reqMessage);
-
-    await for (var resp in respStream) {
-      points.add(Point(resp.x, resp.y, chartType: resp.eChartType, title: resp.title, xLabel: resp.xLabel, yLabel: resp.yLabel));
-    }
-
-    return points;
-  } catch (e) {
-    print('caught $e');
-  }
-
-  return null;
-}
-
 typedef PlotFuncType = Future<List<Point>> Function();
 
 Widget plotWidget(PlotFuncType plotFunc) {
@@ -69,7 +42,7 @@ Widget plotWidget(PlotFuncType plotFunc) {
         // step - populate points with data from snapshot
         List<Point> points = [];
         for (var i = 0; i < snapshot.data.length; i++) {
-          points.add(Point(snapshot.data[i].x, snapshot.data[i].y, chartType: snapshot.data[i].chartType));
+          points.add(Point(snapshot.data[i].x, snapshot.data[i].y, chartType: snapshot.data[i].chartType, colorCode:  snapshot.data[i].colorCode));
         }
 
         var title = snapshot.data[0].title;

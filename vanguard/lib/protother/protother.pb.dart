@@ -298,6 +298,7 @@ class PointReply extends $pb.GeneratedMessage {
     ..aOS(4, 'XLabel', protoName: 'XLabel')
     ..aOS(5, 'YLabel', protoName: 'YLabel')
     ..aOS(6, 'Title', protoName: 'Title')
+    ..aOS(7, 'ColorCode', protoName: 'ColorCode')
     ..hasRequiredFields = false
   ;
 
@@ -369,5 +370,14 @@ class PointReply extends $pb.GeneratedMessage {
   $core.bool hasTitle() => $_has(5);
   @$pb.TagNumber(6)
   void clearTitle() => clearField(6);
+
+  @$pb.TagNumber(7)
+  $core.String get colorCode => $_getSZ(6);
+  @$pb.TagNumber(7)
+  set colorCode($core.String v) { $_setString(6, v); }
+  @$pb.TagNumber(7)
+  $core.bool hasColorCode() => $_has(6);
+  @$pb.TagNumber(7)
+  void clearColorCode() => clearField(7);
 }
 

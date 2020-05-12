@@ -78,6 +78,7 @@ const PointReply$json = const {
     const {'1': 'XLabel', '3': 4, '4': 1, '5': 9, '10': 'XLabel'},
     const {'1': 'YLabel', '3': 5, '4': 1, '5': 9, '10': 'YLabel'},
     const {'1': 'Title', '3': 6, '4': 1, '5': 9, '10': 'Title'},
+    const {'1': 'ColorCode', '3': 7, '4': 1, '5': 9, '10': 'ColorCode'},
   ],
 };
 
