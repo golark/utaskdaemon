@@ -76,7 +76,7 @@ func (u UTaskServer) GetPlot(req *protother.PlotRequest, stream protother.Tasks_
 		count := CountUtaskPerProject(*t)
 		colorIndex := 0
 		for p, c := range count {
-			if err := stream.Send(&protother.PointReply{ EChartType:protother.ChartType_PIE_CHART, X:p, Y:int32(c), XLabel:"date", YLabel:"task count", Title:"Daily UTask Count" , ColorCode:ColorCodes[colorIndex%len(ColorCodes)]}); err!=nil {
+			if err := stream.Send(&protother.PointReply{ EChartType:protother.ChartType_PIE_CHART, X:p, Y:int32(c), XLabel:"", YLabel:"", Title:"Project Breakdown" , ColorCode:ColorCodes[colorIndex%len(ColorCodes)]}); err!=nil {
 				return err
 			}
 			colorIndex++

@@ -1,5 +1,4 @@
 import 'package:charts_flutter/flutter.dart' as charts;
-import 'package:vanguard/grpcclient.dart';
 import './protother/protother.pbenum.dart';
 import 'package:flutter/material.dart';
 import 'package:vanguard/progressindicator.dart';
@@ -22,9 +21,9 @@ class Point {
   Point(this.x, this.y,
       {this.colorCode = defaultColorCode,
       this.chartType = ChartType.LINE_CHART,
-      this.title="",
-      this.xLabel="",
-      this.yLabel=""});
+      this.title = "",
+      this.xLabel = "",
+      this.yLabel = ""});
 
   charts.Color getColor() {
     return charts.Color.fromHex(code: colorCode);
@@ -34,6 +33,46 @@ class Point {
 typedef PlotFuncType = Future<List<Point>> Function();
 
 Widget plotWidget(PlotFuncType plotFunc) {
+
+  List<charts.ChartBehavior> getBehaviours(String title, String yLabel, String xLabel, ChartType chartType) {
+
+        // step - set behaviours
+        List<charts.ChartBehavior> behaviours = [
+          new charts.ChartTitle(title, // title
+              behaviorPosition: charts.BehaviorPosition.top,
+              titleOutsideJustification: charts.OutsideJustification.middle,
+              innerPadding: 18),
+          new charts.ChartTitle(yLabel, // yLabel
+              behaviorPosition: charts.BehaviorPosition.start,
+              titleOutsideJustification:
+                  charts.OutsideJustification.middleDrawArea),
+          new charts.ChartTitle(xLabel, // xLabel
+              behaviorPosition: charts.BehaviorPosition.bottom,
+              titleOutsideJustification:
+                  charts.OutsideJustification.middleDrawArea),
+        ];
+
+        if (chartType == ChartType.PIE_CHART) {
+          behaviours.add(new charts.DatumLegend(
+            position: charts.BehaviorPosition.end,
+            outsideJustification: charts.OutsideJustification.endDrawArea,
+            horizontalFirst: false,
+            cellPadding: new EdgeInsets.only(right: 4.0, bottom: 4.0),
+          ));
+        } else {
+          behaviours.add(new charts.SeriesLegend(
+            position: charts.BehaviorPosition.end,
+            outsideJustification: charts.OutsideJustification.endDrawArea,
+            horizontalFirst: false,
+            desiredMaxRows: 2,
+            cellPadding: new EdgeInsets.only(right: 4.0, bottom: 4.0),
+          ));
+        }
+
+        return behaviours;
+  }
+
+
   return FutureBuilder(
     future: plotFunc(),
     builder: (context, snapshot) {
@@ -42,16 +81,18 @@ Widget plotWidget(PlotFuncType plotFunc) {
         // step - populate points with data from snapshot
         List<Point> points = [];
         for (var i = 0; i < snapshot.data.length; i++) {
-          points.add(Point(snapshot.data[i].x, snapshot.data[i].y, chartType: snapshot.data[i].chartType, colorCode:  snapshot.data[i].colorCode));
+          points.add(Point(snapshot.data[i].x, snapshot.data[i].y,
+              chartType: snapshot.data[i].chartType,
+              colorCode: snapshot.data[i].colorCode));
         }
 
         var title = snapshot.data[0].title;
         var xLabel = snapshot.data[0].xLabel;
         var yLabel = snapshot.data[0].yLabel;
-
+        var chartType = snapshot.data[0].chartType;
         // step - set series
         var series;
-        if (snapshot.data[0].chartType == ChartType.LINE_CHART) {
+        if ( chartType == ChartType.LINE_CHART) {
           series = [
             new charts.Series(
               id: 'Clicks',
@@ -73,25 +114,11 @@ Widget plotWidget(PlotFuncType plotFunc) {
           ];
         }
 
-        // step - set behaviours
-        var behaviours = [
-          new charts.ChartTitle(title, // title
-              behaviorPosition: charts.BehaviorPosition.top,
-              titleOutsideJustification: charts.OutsideJustification.middle,
-              innerPadding: 18),
-          new charts.ChartTitle(yLabel, // yLabel
-              behaviorPosition: charts.BehaviorPosition.start,
-              titleOutsideJustification:
-                  charts.OutsideJustification.middleDrawArea),
-          new charts.ChartTitle(xLabel,  // xLabel
-              behaviorPosition: charts.BehaviorPosition.bottom,
-              titleOutsideJustification:
-                  charts.OutsideJustification.middleDrawArea),
-        ];
 
+        var behaviours = getBehaviours(title, yLabel, xLabel, chartType);
         // step - select chart type
         Widget chart;
-        switch (snapshot.data[0].chartType) {
+        switch (chartType) {
           case ChartType.BAR_CHART:
             chart = charts.BarChart(series, behaviors: behaviours);
             break;

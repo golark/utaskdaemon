@@ -35,51 +35,6 @@ class GrpcClient {
 
   }
 
-
-  Future<List<Point>> getProjectTaskCount() async {
-
-    List<Point> projUTaskCount = [];
-
-    try {
-      if (this.client != null) {
-        var respStream = client.getProjectTaskCount(TaskRequest()..message="aloha");
-
-        await for (var resp in respStream) {
-          projUTaskCount.add(Point(resp.project, resp.count, chartType: resp.chartType));
-        }
-
-        return projUTaskCount;
-      }
-    } catch(e) {
-      print('caught $e');
-    }
-
-    return null;
-  }
-
-  Future<List<Point>> getUtasksPerDay() async {
-
-    List<Point> taskCount = [];
-
-    try {
-      if (this.client != null) {
-        var respStream = client.getDailyTaskCount(TaskRequest()..message="aloha");
-
-        await for (var resp in respStream) {
-          taskCount.add(Point(resp.date, resp.count, chartType:resp.chartType));
-        }
-
-        return taskCount;
-      }
-    } catch(e) {
-      print('caught $e');
-    }
-
-    return null;
-  }
-
-
-
   Future pingServer() async {
     try {
 
