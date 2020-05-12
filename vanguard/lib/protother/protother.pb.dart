@@ -9,6 +9,10 @@ import 'dart:core' as $core;
 
 import 'package:protobuf/protobuf.dart' as $pb;
 
+import 'protother.pbenum.dart';
+
+export 'protother.pbenum.dart';
+
 class PingRequest extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('PingRequest', package: const $pb.PackageName('protother'), createEmptyInstance: create)
     ..aOS(1, 'Message', protoName: 'Message')
@@ -157,6 +161,7 @@ class DailyTaskCount extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('DailyTaskCount', package: const $pb.PackageName('protother'), createEmptyInstance: create)
     ..aOS(1, 'Date', protoName: 'Date')
     ..a<$core.int>(2, 'Count', $pb.PbFieldType.O3, protoName: 'Count')
+    ..e<ChartType>(3, 'chartType', $pb.PbFieldType.OE, protoName: 'chartType', defaultOrMaker: ChartType.LINE_CHART, valueOf: ChartType.valueOf, enumValues: ChartType.values)
     ..hasRequiredFields = false
   ;
 
@@ -192,12 +197,22 @@ class DailyTaskCount extends $pb.GeneratedMessage {
   $core.bool hasCount() => $_has(1);
   @$pb.TagNumber(2)
   void clearCount() => clearField(2);
+
+  @$pb.TagNumber(3)
+  ChartType get chartType => $_getN(2);
+  @$pb.TagNumber(3)
+  set chartType(ChartType v) { setField(3, v); }
+  @$pb.TagNumber(3)
+  $core.bool hasChartType() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearChartType() => clearField(3);
 }
 
 class ProjectTaskCount extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('ProjectTaskCount', package: const $pb.PackageName('protother'), createEmptyInstance: create)
     ..aOS(1, 'Project', protoName: 'Project')
     ..a<$core.int>(2, 'Count', $pb.PbFieldType.O3, protoName: 'Count')
+    ..e<ChartType>(3, 'chartType', $pb.PbFieldType.OE, protoName: 'chartType', defaultOrMaker: ChartType.LINE_CHART, valueOf: ChartType.valueOf, enumValues: ChartType.values)
     ..hasRequiredFields = false
   ;
 
@@ -233,5 +248,126 @@ class ProjectTaskCount extends $pb.GeneratedMessage {
   $core.bool hasCount() => $_has(1);
   @$pb.TagNumber(2)
   void clearCount() => clearField(2);
+
+  @$pb.TagNumber(3)
+  ChartType get chartType => $_getN(2);
+  @$pb.TagNumber(3)
+  set chartType(ChartType v) { setField(3, v); }
+  @$pb.TagNumber(3)
+  $core.bool hasChartType() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearChartType() => clearField(3);
+}
+
+class PlotRequest extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo('PlotRequest', package: const $pb.PackageName('protother'), createEmptyInstance: create)
+    ..aOS(1, 'Message', protoName: 'Message')
+    ..hasRequiredFields = false
+  ;
+
+  PlotRequest._() : super();
+  factory PlotRequest() => create();
+  factory PlotRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory PlotRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  PlotRequest clone() => PlotRequest()..mergeFromMessage(this);
+  PlotRequest copyWith(void Function(PlotRequest) updates) => super.copyWith((message) => updates(message as PlotRequest));
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static PlotRequest create() => PlotRequest._();
+  PlotRequest createEmptyInstance() => create();
+  static $pb.PbList<PlotRequest> createRepeated() => $pb.PbList<PlotRequest>();
+  @$core.pragma('dart2js:noInline')
+  static PlotRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<PlotRequest>(create);
+  static PlotRequest _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get message => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set message($core.String v) { $_setString(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasMessage() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearMessage() => clearField(1);
+}
+
+class PointReply extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo('PointReply', package: const $pb.PackageName('protother'), createEmptyInstance: create)
+    ..aOS(1, 'X', protoName: 'X')
+    ..a<$core.int>(2, 'Y', $pb.PbFieldType.O3, protoName: 'Y')
+    ..e<ChartType>(3, 'EChartType', $pb.PbFieldType.OE, protoName: 'EChartType', defaultOrMaker: ChartType.LINE_CHART, valueOf: ChartType.valueOf, enumValues: ChartType.values)
+    ..aOS(4, 'XLabel', protoName: 'XLabel')
+    ..aOS(5, 'YLabel', protoName: 'YLabel')
+    ..aOS(6, 'Title', protoName: 'Title')
+    ..hasRequiredFields = false
+  ;
+
+  PointReply._() : super();
+  factory PointReply() => create();
+  factory PointReply.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory PointReply.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  PointReply clone() => PointReply()..mergeFromMessage(this);
+  PointReply copyWith(void Function(PointReply) updates) => super.copyWith((message) => updates(message as PointReply));
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static PointReply create() => PointReply._();
+  PointReply createEmptyInstance() => create();
+  static $pb.PbList<PointReply> createRepeated() => $pb.PbList<PointReply>();
+  @$core.pragma('dart2js:noInline')
+  static PointReply getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<PointReply>(create);
+  static PointReply _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get x => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set x($core.String v) { $_setString(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasX() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearX() => clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.int get y => $_getIZ(1);
+  @$pb.TagNumber(2)
+  set y($core.int v) { $_setSignedInt32(1, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasY() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearY() => clearField(2);
+
+  @$pb.TagNumber(3)
+  ChartType get eChartType => $_getN(2);
+  @$pb.TagNumber(3)
+  set eChartType(ChartType v) { setField(3, v); }
+  @$pb.TagNumber(3)
+  $core.bool hasEChartType() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearEChartType() => clearField(3);
+
+  @$pb.TagNumber(4)
+  $core.String get xLabel => $_getSZ(3);
+  @$pb.TagNumber(4)
+  set xLabel($core.String v) { $_setString(3, v); }
+  @$pb.TagNumber(4)
+  $core.bool hasXLabel() => $_has(3);
+  @$pb.TagNumber(4)
+  void clearXLabel() => clearField(4);
+
+  @$pb.TagNumber(5)
+  $core.String get yLabel => $_getSZ(4);
+  @$pb.TagNumber(5)
+  set yLabel($core.String v) { $_setString(4, v); }
+  @$pb.TagNumber(5)
+  $core.bool hasYLabel() => $_has(4);
+  @$pb.TagNumber(5)
+  void clearYLabel() => clearField(5);
+
+  @$pb.TagNumber(6)
+  $core.String get title => $_getSZ(5);
+  @$pb.TagNumber(6)
+  set title($core.String v) { $_setString(5, v); }
+  @$pb.TagNumber(6)
+  $core.bool hasTitle() => $_has(5);
+  @$pb.TagNumber(6)
+  void clearTitle() => clearField(6);
 }
 

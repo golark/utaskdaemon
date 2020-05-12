@@ -29,6 +29,10 @@ class TasksClient extends $grpc.Client {
           ($0.TaskRequest value) => value.writeToBuffer(),
           ($core.List<$core.int> value) =>
               $0.ProjectTaskCount.fromBuffer(value));
+  static final _$getPlot = $grpc.ClientMethod<$0.PlotRequest, $0.PointReply>(
+      '/protother.Tasks/GetPlot',
+      ($0.PlotRequest value) => value.writeToBuffer(),
+      ($core.List<$core.int> value) => $0.PointReply.fromBuffer(value));
   static final _$ping = $grpc.ClientMethod<$0.PingRequest, $0.PingReply>(
       '/protother.Tasks/Ping',
       ($0.PingRequest value) => value.writeToBuffer(),
@@ -58,6 +62,13 @@ class TasksClient extends $grpc.Client {
       {$grpc.CallOptions options}) {
     final call = $createCall(
         _$getProjectTaskCount, $async.Stream.fromIterable([request]),
+        options: options);
+    return $grpc.ResponseStream(call);
+  }
+
+  $grpc.ResponseStream<$0.PointReply> getPlot($0.PlotRequest request,
+      {$grpc.CallOptions options}) {
+    final call = $createCall(_$getPlot, $async.Stream.fromIterable([request]),
         options: options);
     return $grpc.ResponseStream(call);
   }
@@ -95,6 +106,13 @@ abstract class TasksServiceBase extends $grpc.Service {
         true,
         ($core.List<$core.int> value) => $0.TaskRequest.fromBuffer(value),
         ($0.ProjectTaskCount value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$0.PlotRequest, $0.PointReply>(
+        'GetPlot',
+        getPlot_Pre,
+        false,
+        true,
+        ($core.List<$core.int> value) => $0.PlotRequest.fromBuffer(value),
+        ($0.PointReply value) => value.writeToBuffer()));
     $addMethod($grpc.ServiceMethod<$0.PingRequest, $0.PingReply>(
         'Ping',
         ping_Pre,
@@ -119,6 +137,11 @@ abstract class TasksServiceBase extends $grpc.Service {
     yield* getProjectTaskCount(call, await request);
   }
 
+  $async.Stream<$0.PointReply> getPlot_Pre(
+      $grpc.ServiceCall call, $async.Future<$0.PlotRequest> request) async* {
+    yield* getPlot(call, await request);
+  }
+
   $async.Future<$0.PingReply> ping_Pre(
       $grpc.ServiceCall call, $async.Future<$0.PingRequest> request) async {
     return ping(call, await request);
@@ -130,6 +153,8 @@ abstract class TasksServiceBase extends $grpc.Service {
       $grpc.ServiceCall call, $0.TaskRequest request);
   $async.Stream<$0.ProjectTaskCount> getProjectTaskCount(
       $grpc.ServiceCall call, $0.TaskRequest request);
+  $async.Stream<$0.PointReply> getPlot(
+      $grpc.ServiceCall call, $0.PlotRequest request);
   $async.Future<$0.PingReply> ping(
       $grpc.ServiceCall call, $0.PingRequest request);
 }

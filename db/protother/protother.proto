@@ -2,6 +2,12 @@ syntax = "proto3";
 
 package protother;
 
+enum ChartType {
+  LINE_CHART = 0;
+  PIE_CHART = 1;
+  BAR_CHART = 2;
+}
+
 // plots
 service Tasks {
   rpc GetTasks (TaskRequest) returns (stream UTask) {}
@@ -9,6 +15,8 @@ service Tasks {
   rpc GetDailyTaskCount (TaskRequest) returns (stream DailyTaskCount) {}
 
   rpc GetProjectTaskCount (TaskRequest) returns (stream ProjectTaskCount) {}
+
+  rpc GetPlot (PlotRequest) returns (stream PointReply) {}
 
   rpc Ping (PingRequest) returns (PingReply) {}
 }
@@ -34,9 +42,26 @@ message UTask {
 message DailyTaskCount {
   string Date = 1;
   int32 Count = 2;
+  ChartType chartType = 3;
 }
 
 message ProjectTaskCount {
   string Project = 1;
   int32 Count = 2;
+  ChartType chartType = 3;
 }
+
+message PlotRequest {
+  string Message = 1;
+}
+
+message PointReply {
+  string X= 1;
+  int32 Y = 2;
+  ChartType EChartType = 3;
+  string XLabel = 4;
+  string YLabel = 5;
+  string Title = 6;
+}
+
+

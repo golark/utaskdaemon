@@ -44,7 +44,7 @@ class GrpcClient {
         var respStream = client.getProjectTaskCount(TaskRequest()..message="aloha");
 
         await for (var resp in respStream) {
-          projUTaskCount.add(Point(resp.project, resp.count));
+          projUTaskCount.add(Point(resp.project, resp.count, chartType: resp.chartType));
         }
 
         return projUTaskCount;
@@ -65,7 +65,7 @@ class GrpcClient {
         var respStream = client.getDailyTaskCount(TaskRequest()..message="aloha");
 
         await for (var resp in respStream) {
-          taskCount.add(Point(resp.date, resp.count));
+          taskCount.add(Point(resp.date, resp.count, chartType:resp.chartType));
         }
 
         return taskCount;

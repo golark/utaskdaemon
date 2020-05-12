@@ -2,6 +2,7 @@ package db
 
 import (
 	"context"
+	"errors"
 	"github.com/golark/utaskdaemon/db/protother"
 	log "github.com/sirupsen/logrus"
 	gRPC "google.golang.org/grpc"
@@ -25,7 +26,8 @@ func (u UTaskServer) Ping(ctx context.Context, req *protother.PingRequest) (*pro
 	return &reply, nil
 }
 
-//
+// GetTasks
+// streams all tasks in db back to the client
 func (u UTaskServer) GetTasks(req *protother.TaskRequest, strm protother.Tasks_GetTasksServer) error{
 
 	tasks, err := QueryAllTasks()
@@ -40,6 +42,43 @@ func (u UTaskServer) GetTasks(req *protother.TaskRequest, strm protother.Tasks_G
 		if err := strm.Send(&utask); err != nil {
 			log.WithFields(log.Fields{"err": err}).Error("error streaming")
 		}
+	}
+
+	return nil
+}
+
+func (u UTaskServer) GetPlot(req *protother.PlotRequest, stream protother.Tasks_GetPlotServer) error {
+
+	// step 1 - get all tasks from db
+	t, err := QueryAllTasks()
+	if err != nil {
+		log.WithFields(log.Fields{"err":err}).Error("cant get tasks from db")
+		return err
+	}
+
+	switch req.Message {
+
+	case "DailyTaskCount":
+		count, orderdKeys := CountNumUtasksPerDay(*t)
+		for _, k := range orderdKeys {
+			log.WithFields(log.Fields{"k":k}).Info("sending count")
+
+			if err := stream.Send(&protother.PointReply{ EChartType:protother.ChartType_BAR_CHART, X:k, Y:int32(count[k]), XLabel:"date", YLabel:"task count", Title:"Daily UTask Count" }); err!=nil {
+				return err
+			}
+		}
+
+	case "ProjectCount":
+		count := CountUtaskPerProject(*t)
+		for p, c := range count {
+			if err := stream.Send(&protother.PointReply{ EChartType:protother.ChartType_PIE_CHART, X:p, Y:int32(c), XLabel:"date", YLabel:"task count", Title:"Daily UTask Count" }); err!=nil {
+				return err
+			}
+		}
+
+	default:
+		log.WithFields(log.Fields{"req:":req.Message}).Error("cant serve plot request")
+		return errors.New("cant serve plot request")
 	}
 
 	return nil
@@ -61,7 +100,7 @@ func (u UTaskServer)  GetDailyTaskCount(req *protother.TaskRequest, strm prototh
 	for _, k := range orderdKeys {
 		log.WithFields(log.Fields{"k":k}).Info("sending count")
 
-		if err := strm.Send(&protother.DailyTaskCount{Date:k,Count:int32(count[k])}); err!=nil {
+		if err := strm.Send(&protother.DailyTaskCount{Date:k,Count:int32(count[k]), ChartType:protother.ChartType_BAR_CHART}); err!=nil {
 			return err
 		}
 	}
@@ -84,7 +123,7 @@ func (u UTaskServer)  GetProjectTaskCount(req *protother.TaskRequest, stream pro
 	// step 2 - count the utask per project and stream
 	count := CountUtaskPerProject(*t)
 	for p, c := range count {
-		if err := stream.Send(&protother.ProjectTaskCount{Project:p, Count:int32(c)}); err!=nil {
+		if err := stream.Send(&protother.ProjectTaskCount{Project:p, Count:int32(c), ChartType:protother.ChartType_PIE_CHART}); err!=nil {
 			return err
 		}
 	}

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:vanguard/plot.dart';
 import 'package:vanguard/tasklistwidget.dart';
 import 'package:vanguard/dailytaskcountchart.dart';
 import 'package:vanguard/projecttaskcountchart.dart';
@@ -59,6 +60,7 @@ var dashboardWidgets = <Widget>[
       children: <Widget>[
         graphDailyTaskcount(),
         graphProjectTaskCount(),
+        plotWidget(samplePlot),
       ],
     ),
   ),
