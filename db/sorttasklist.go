@@ -62,7 +62,6 @@ func SortTaskList(taskTraces []TaskTrace) []TaskTrace {
 // count the number of utasks registered per date in date order old -> new
 func CountNumUtasksPerDay(taskTraces []TaskTrace) (map[string]int, []string) {
 
-
 	if taskTraces == nil {
 		return nil, nil
 	}
