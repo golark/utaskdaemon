@@ -42,7 +42,7 @@ Following Gitflow guidelines. Code walkthrough can be arranged for the keen cont
 
 utask daemon is intended to run as a service serving requests from utask cli over a Unix Socket using Rest APIs.
 
-![unixsocket](media/unixsocketendpoint.png)
+![unixsocket](media/architecture.png)
 
 This architecture is similar to the Docker daemon/cli interaction.
 Once a request has been made by the utask cli checks the request parameters before forwarding the request to the daemon. 
