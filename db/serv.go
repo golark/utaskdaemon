@@ -47,7 +47,6 @@ func (u UTaskServer) GetTasks(req *protother.TaskRequest, strm protother.Tasks_G
 	return nil
 }
 
-
 func (u UTaskServer) GetPlot(req *protother.PlotRequest, stream protother.Tasks_GetPlotServer) error {
 
 	ColorCodes := []string{"#fb7e7e", "#b6fb7e", "#7ea4fb", "#937efb", "#fbae7e", "#ec7efb", "#7efbe0", "#40ff1f", "#fbec7e", "#1fffe5", "#fff81f", "#ff1f1f", "#1f40ff", "#9ba9fd",

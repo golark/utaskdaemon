@@ -41,6 +41,9 @@ Following Gitflow guidelines. Code walkthrough can be arranged for the keen cont
 #### Architecture
 
 utask daemon is intended to run as a service serving requests from utask cli over a Unix Socket using Rest APIs.
+
+![unixsocket](media/unixsocketendpoint.png)
+
 This architecture is similar to the Docker daemon/cli interaction.
 Once a request has been made by the utask cli checks the request parameters before forwarding the request to the daemon. 
 The daemon further checks whether the request can be served and returns a confirmation to the cli. Utask cli can return without blocking
@@ -65,8 +68,10 @@ this link for instructions on how to do this.
     |   ├── starttimer.go           # start a single shot utask timer
     |   ├── httpmux_test.go         # module test
     ├── media                       # images for project logo and installation demonstration
-    |   ├── utasklogo.png #
-    |   ├── utasklogo_withprint.png #
+    |   ├── manual_installation.gif # illustrates manual installation
+    |   ├── unixsocketendpoint.png  # daemon <-> cli communication diagram
+    |   ├── utasklogo.png           # logo for the app
+    |   ├── utasklogo_withprint.png # 
     ├── config.yaml                 # configuration for the project  
     ├── go.mod                      # required modules
     ├── install.sh                  # for manual installations
