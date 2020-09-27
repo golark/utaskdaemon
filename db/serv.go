@@ -11,6 +11,7 @@ import (
 
 //go:generate protoc protother.proto -I=./protother --go_out=plugins=grpc:./protother
 //go:generate protoc protother.proto -I=./protother --dart_out=grpc:./protother
+//go:generate python -m grpc_tools.protoc -I./protother --python_out=./protother --grpc_python_out=./protother protother.proto
 
 const (
 	GrpcPort = ":9070"
@@ -37,7 +38,8 @@ func (u UTaskServer) GetTasks(req *protother.TaskRequest, strm protother.Tasks_G
 	}
 
 	// stream
-	for _, t := range *tasks {
+	for i:=len(*tasks)-1;i>0;i-- {
+		t := (*tasks)[i]
 		utask := protother.UTask{Project:t.T.ProjectName, TaskMane:t.T.TaskName, Date:t.SDate}
 		if err := strm.Send(&utask); err != nil {
 			log.WithFields(log.Fields{"err": err}).Error("error streaming")
